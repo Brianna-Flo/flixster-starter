@@ -2,10 +2,13 @@ import React from 'react';
 import './MovieList.css'
 import MovieCard from './MovieCard';
 
-const MovieList = () => {
+const MovieList = (props) => {
+    // fetch movie data
+    const movieData = props.data.results;
     return (
-        <div>
-
+        <div className="movie-card-container">
+            {/* create a movie card component for each */}
+            movieData.
         </div>
     )
 }
