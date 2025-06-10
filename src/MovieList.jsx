@@ -4,18 +4,17 @@ import MovieCard from './MovieCard';
 
 import { parseMovieData } from './utils/utils'
 
-// const MovieList = ({ onLoadMore, data }) => {
-const MovieList = (props) => {
+const MovieList = ({ onLoadMore, data }) => {
 
-    // handler function for clicking load more button
-    // const handleClick = (event) => {
-    //     event.preventDefault();
-    //     fetchData(page)
-    // }
+    // handler function for clicking load more movies (increment page by 1)
+    const handleClick = (event) => {
+        event.preventDefault();
+        onLoadMore ();
+    }
 
     // create an array containing only necessary movie data
-    console.log(props.data);
-    const parsedMovies = parseMovieData(props.data.results);
+    console.log(data);
+    const parsedMovies = parseMovieData(data);
     return (
         <div>
             <div className="movie-card-container">
@@ -29,7 +28,7 @@ const MovieList = (props) => {
                 })
             }
             </div>
-        {/* <button onClick={handleLoadMore}>Load More</button> */}
+        <button onClick={handleClick}>Load More</button>
         </div>
     )
 }
