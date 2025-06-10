@@ -1,14 +1,20 @@
+body {
+  background-color: #1c1c1e;
+}
+
 .App {
   text-align: center;
+  /* background-color: #1c1c1e; */
 }
 
 .App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
+  background-color: #d7263d;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  color: white;
+  color: #ffffff;
   padding: 20px;
 }
 
