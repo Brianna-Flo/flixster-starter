@@ -19,23 +19,29 @@ const App = () => {
   const [page, setPage] = useState(1);
   // used to hold the entire list of movies
   const [searchQuery, setSearchQuery] = useState("");
+  
+  let MAX_PAGE;
 
-  const createURL = (isSearch) => {
+  const createURL = (isSearch, firstLoad) => {
     const apiKey = import.meta.env.VITE_API_KEY;
+    const pageNum = firstLoad ? 1 : page;
     if (isSearch) {
-      return `${BASE_URL}${SEARCH_REQUEST}?api_key=${apiKey}&query=${searchQuery}&page=${page}`;
+      return `${BASE_URL}${SEARCH_REQUEST}?api_key=${apiKey}&query=${searchQuery}&page=${pageNum}`;
     } else {
-      return `${BASE_URL}${NOW_PLAYING}?api_key=${apiKey}&page=${page}`;
+      return `${BASE_URL}${NOW_PLAYING}?api_key=${apiKey}&page=${pageNum}`;
     }
   };
 
   const fetchData = async (isSearch, firstLoad) => {
     try {
-      const response = await fetch(createURL(isSearch));
+      const response = await fetch(createURL(isSearch, firstLoad));
       if (!response.ok) {
         throw new Error("Failed to fetch movie data");
       }
       const data = await response.json();
+      // set max page
+      MAX_PAGE = data.total_pages !== page;
+      console.log("total pages", MAX_PAGE)
       setMovieData((prev) => {
         if (firstLoad) {
           return data.results;
@@ -63,10 +69,14 @@ const App = () => {
   //   fetchData(PRESENT_NOW_PLAYING, true);
   // }, []);
 
+  // useEffect(() => {
+  //   setPage(1);
+  // }, []);
+
   // if user requests to load more data (page number changes) fetch data
   useEffect(() => {
     // if (searchQuery !== "") {
-    if (searchView === 'true') {
+    if (searchView === "search") {
       // fetchSearchData();
       fetchData(PRESENT_SEARCH, false);
     } else {
@@ -76,7 +86,8 @@ const App = () => {
 
   useEffect(() => {
     // if (searchQuery !== "") {
-    if (searchView === 'true') {
+    if (searchView === "search") {
+      console.log("search query changed");
       // reset data to empty
       setMovieData([]);
       // reset to first page
@@ -86,35 +97,44 @@ const App = () => {
     }
   }, [searchQuery]);
 
+  // whether we are going to dispaly search results or now playing movies
+  const [searchView, setSearchView] = useState("playing");
 
-    // whether we are going to dispaly search results or now playing movies
-    const[searchView, setSearchView] = useState('false');
-    // let searchBar = <></>;
+  useEffect(() => {
+    console.log("view changed");
+    setPage(1);
+    setMovieData([]);
+  }, [searchView]);
 
-    const handleViewRequest = (viewRequest) => {
-      // reset page when we change views
+  const handleViewRequest = (viewRequest) => {
+    // reset page when we change views
+    // setMovieData([]);
+    // setPage(1);
+    // if (viewRequest) { // if we are in search mode
+    //   searchBar = <SearchForm onSearch={handleSearch} />;
+    // } else {
+    //   searchBar =  <></>;
+    //   fetchData(PRESENT_NOW_PLAYING, true);
+    // }
+    if (viewRequest !== searchView) {
+      setSearchView(viewRequest);
       // setMovieData([]);
-      // setPage(1);
-      // if (viewRequest) { // if we are in search mode
-      //   searchBar = <SearchForm onSearch={handleSearch} />;
-      // } else {
-      //   searchBar =  <></>;
-      //   fetchData(PRESENT_NOW_PLAYING, true);
-      // }
-      if (viewRequest !== searchView) {
-        setSearchView (viewRequest);
-        setPage(1);
-        if (viewRequest === 'true') {
-          console.log('clicked search')
-          setMovieData([]);
-        } else {
-          console.log('clicked now playing')
-          fetchData(PRESENT_NOW_PLAYING, true);
-        }
+      setPage(1);
+      if (viewRequest === "search") {
+        console.log("clicked search");
+        setMovieData([]);
+      } else {
+        console.log("clicked now playing");
+        // setPage(1);
+        // console.log(page);
+        fetchData(PRESENT_NOW_PLAYING, true);
       }
     }
-    let searchBar = searchView === 'true' ? <SearchForm onSearch={handleSearch} /> : <></>
+  };
 
+
+  let searchBar =
+    searchView === "search" ? <SearchForm onSearch={handleSearch} /> : <></>;
 
   return (
     <div className="App">
@@ -122,12 +142,16 @@ const App = () => {
         <h1>Flixter</h1>
         {/* <SearchForm onSearch={handleSearch} /> */}
         {/* display search bar only when search view requested */}
-        {searchBar}
-        <NavBar onViewRequest={handleViewRequest}/>
+        <div>
+          <NavBar onViewRequest={handleViewRequest} />
+          {searchBar}
+        </div>
       </header>
       <main>
         {/* data is the .results (the array of actual movie data) */}
-        <MovieList onLoadMore={handleLoadMore} data={movieData} />
+        {console.log(MAX_PAGE)}
+        {console.log(page)}
+        <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={MAX_PAGE} />
       </main>
     </div>
   );

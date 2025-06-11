@@ -9,9 +9,11 @@ const MovieCard = ({image, title, rating}) => {
     return (
         <div className="movie-card">
             {/* <img src={`${props.image}`} /> */}
-            <img className="movie-poster" src={`${IMG_URL}${image}`}/>
-            <h4>{title}</h4>
-            <p>Rating: {rating}</p>
+            <img className="movie-poster" src={`${IMG_URL}${image}`} alt={title}/>
+            <div className="movie-info">
+                <h4>{title}</h4>
+                <p>Rating: {rating}</p>
+            </div>
         </div>
     )
 }

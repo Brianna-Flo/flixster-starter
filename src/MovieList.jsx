@@ -4,8 +4,8 @@ import MovieCard from './MovieCard';
 
 import { parseMovieData } from './utils/utils'
 
-const MovieList = ({ onLoadMore, data }) => {
-
+const MovieList = ({ onLoadMore, data, morePages }) => {
+    console.log("more pages", morePages)
     if (data.length === 0) {
         return <p>No search matches ;-;</p>
     }
@@ -20,6 +20,12 @@ const MovieList = ({ onLoadMore, data }) => {
     // create an array filtering out movies with null images
     const filteredMovies = parsedMovies.filter((movie) => movie.image !== null);
     console.log(filteredMovies);
+    // display button only if there are more pages to load
+    // let content = <></>;
+    // if (morePages) {
+    //     console.log("load more button")
+    //     content = <button onClick={handleClick}>Load More</button>;
+    // }
     return (
         <div>
             <div className="movie-card-container">
@@ -33,7 +39,9 @@ const MovieList = ({ onLoadMore, data }) => {
                 })
             }
             </div>
+        
         <button onClick={handleClick}>Load More</button>
+        {/* {content} */}
         </div>
     )
 }

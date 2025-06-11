@@ -13,12 +13,13 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   color: #ffffff;
-  padding: 20px;
+  padding: 20px 70px;
 }
 
 @media (max-width: 600px) {
+  /* phones */
   .movie-card {
     width: 100%;
   }
@@ -31,4 +32,16 @@ body {
   .search-bar form {
     flex-direction: column;
   }
+}
+
+@media (min-width: 600px) {
+  /* tablets and large phones */
+}
+
+@media (min-width: 768px) {
+  /* small laptops */
+}
+
+@media (mid-width: 1280px) {
+  /* large laptops */
 }

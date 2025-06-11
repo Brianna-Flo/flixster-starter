@@ -10,8 +10,8 @@ const NavBar = ({onViewRequest}) => {
     }
     return (
         <div>
-            <button onClick={handleNavClick} value='false'>Now Playing</button>
-            <button onClick={handleNavClick}value='true'>Search</button>
+            <button onClick={handleNavClick} value='playing'>Now Playing</button>
+            <button onClick={handleNavClick}value='search'>Search</button>
         </div>
         // <nav>
         //     <NavLink to="/">Now Playing</NavLink>
