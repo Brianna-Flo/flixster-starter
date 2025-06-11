@@ -4,7 +4,7 @@ import MovieCard from './MovieCard';
 
 import { parseMovieData } from './utils/utils'
 
-const MovieList = ({ onLoadMore, data, morePages, onOpenModal }) => {
+const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal }) => {
     console.log("more pages", morePages)
     if (data.length === 0) {
         return <p>No search matches ;-;</p>
@@ -14,6 +14,10 @@ const MovieList = ({ onLoadMore, data, morePages, onOpenModal }) => {
         event.preventDefault();
         onLoadMore ();
     }
+
+    // const handleLoadModal = (event) => {
+    //     onLoadModal(data);
+    // }
 
     // create an array containing only necessary movie data
     const parsedMovies = parseMovieData(data);
@@ -33,7 +37,8 @@ const MovieList = ({ onLoadMore, data, morePages, onOpenModal }) => {
                 filteredMovies.map((movie) => {
                     return (
                         // create a movie card component for each movie in array using parsed data
-                        <MovieCard key={movie.id} image={movie.image} title={movie.title} rating={movie.rating} onOpenModal={onOpenModal} />
+                        // <MovieCard key={movie.id} image={movie.image} title={movie.title} rating={movie.rating} onOpenModal={onOpenModal} onLoadModal={onLoadModal} />
+                        <MovieCard key={movie.id} data={movie} onOpenModal={onOpenModal} onLoadModal={onLoadModal} />
                     )
                 })
             }
