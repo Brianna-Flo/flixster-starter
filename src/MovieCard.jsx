@@ -6,13 +6,12 @@ import { useState } from 'react';
 
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
-const MovieCard = ({image, title, rating}) => {
-
-    const [modalOpen, setModalOpen] = useState(false);
-
+const MovieCard = ({image, title, rating, onOpenModal}) => {
     // handle click to open movie card
     const handleCardClick = (event) => {
-        setModalOpen(true);
+        console.log("modal clicked");
+        
+        onOpenModal();
     }
 
     return (

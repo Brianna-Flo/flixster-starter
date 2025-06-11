@@ -25,6 +25,8 @@ const App = () => {
   const [searchView, setSearchView] = useState("playing");
   // keep track of total pages
   const [maxPages, setMaxPages] = useState(1);
+  // keep track of whether modal is open or not
+  const [modalOpen, setModalOpen] = useState(false);
   
   const createURL = (isSearch, firstLoad) => {
     const apiKey = import.meta.env.VITE_API_KEY;
@@ -106,30 +108,26 @@ const App = () => {
   }, [searchView]);
 
   const handleViewRequest = (viewRequest) => {
-    // reset page when we change views
-    // setMovieData([]);
-    // setPage(1);
-    // if (viewRequest) { // if we are in search mode
-    //   searchBar = <SearchForm onSearch={handleSearch} />;
-    // } else {
-    //   searchBar =  <></>;
-    //   fetchData(PRESENT_NOW_PLAYING, true);
-    // }
     if (viewRequest !== searchView) {
       setSearchView(viewRequest);
-      // setMovieData([]);
-      // setPage(1);
       if (viewRequest === "search") {
         console.log("clicked search");
-        // setMovieData([]);
       } else {
         console.log("clicked now playing");
-        // setPage(1);
-        // console.log(page);
         fetchData(PRESENT_NOW_PLAYING, true);
       }
     }
   };
+
+  // open the modal
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  }
+
+  // close the modal
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  }
 
 
   let searchBar =
@@ -150,8 +148,8 @@ const App = () => {
         {/* data is the .results (the array of actual movie data) */}
         {console.log(maxPages)}
         {console.log(page)}
-        <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={maxPages !== page} />
-        <Modal />
+        <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={maxPages !== page} onOpenModal={handleOpenModal}/>
+        {modalOpen && <Modal onCloseModal={handleCloseModal}/>}
       </main>
     </div>
   );

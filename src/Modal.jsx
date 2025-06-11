@@ -1,17 +1,24 @@
 import React from "react";
 import "./Modal.css";
 
-const Modal = () => {
-    console.log("in modal");
+const Modal = ({ onCloseModal }) => {
+  const handleModalClose = (event) => {
+    console.log("pressed close");
+    onCloseModal();
+  };
+
   return (
-    <div id="movie-modal">
-      <h2 id="movie-title">Movie Title</h2>
-      <img id="movie-img" src="" />
-      <p id="release-date">Release Date</p>
-      <p id="overview">Overview: overview of movie</p>
-      <p id="genres">Genres: genres</p>
-      <button id="close">Close</button>
-      {/* <span class="close">&times;</span> */}
+    <div className="modal" id="movie-modal">
+      <div className="modal-content">
+        <h2 id="movie-title">Movie Title</h2>
+        <img id="movie-img" src="" />
+        <p id="release-date">Release Date</p>
+        <p id="overview">Overview: overview of movie</p>
+        <p id="genres">Genres: genres</p>
+        <button className="close" onClick={handleModalClose}>
+          Close
+        </button>
+      </div>
     </div>
   );
 };
