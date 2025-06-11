@@ -5,12 +5,13 @@ import MovieList from "./MovieList";
 import SearchForm from "./SearchForm";
 import data from "./data/data.js";
 import NavBar from "./NavBar";
-import Modal from './Modal';
-
+import Modal from "./Modal";
+import FilterMenu from "./FilterMenu";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const NOW_PLAYING = "/movie/now_playing";
 const SEARCH_REQUEST = "/search/movie";
+const FILTER_REQUEST = "/discover/movie";
 const PRESENT_SEARCH = true;
 const PRESENT_NOW_PLAYING = false;
 
@@ -31,21 +32,47 @@ const App = () => {
   const [modalData, setModalData] = useState({});
   // hold array of genre data
   const [genreData, setGenreData] = useState([]);
-  
-  const createURL = (isSearch, firstLoad) => {
+  // the current filter to present
+  const [filter, setFilter] = useState("");
+
+  const createURL = (isSearch, firstLoad, newFilter) => {
     const apiKey = import.meta.env.VITE_API_KEY;
     const pageNum = firstLoad ? 1 : page;
     if (isSearch) {
       return `${BASE_URL}${SEARCH_REQUEST}?api_key=${apiKey}&query=${searchQuery}&page=${pageNum}`;
+    } else if (newFilter !== "") {
+      console.log("creating filter url for ", filter);
+      return `${BASE_URL}${FILTER_REQUEST}?api_key=${apiKey}&sort_by=${filter}&page=${pageNum}`;
     } else {
       return `${BASE_URL}${NOW_PLAYING}?api_key=${apiKey}&page=${pageNum}`;
+    }
+  };
+
+  const fetchFiltered = async () => {
+    try {
+      const apiKey = import.meta.env.VITE_API_KEY;
+      const response = await fetch(
+        `${BASE_URL}${FILTER_REQUEST}?api_key=${apiKey}&sort_by=${filter}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch genre data");
+      }
+      const data = await response.json();
+      setMaxPages(data.total_pages);
+      setMovieData((prev) => {
+        return data.results;
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const fetchGenres = async () => {
     try {
       const apiKey = import.meta.env.VITE_API_KEY;
-      const response = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}`);
+      const response = await fetch(
+        `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch genre data");
       }
@@ -56,15 +83,17 @@ const App = () => {
     }
   };
 
-  const fetchData = async (isSearch, firstLoad) => {
+  const fetchData = async (isSearch, firstLoad, newFilter) => {
     try {
-      const response = await fetch(createURL(isSearch, firstLoad));
+      const created_url = createURL(isSearch, firstLoad, filter);
+      console.log("url is ", created_url);
+      const response = await fetch(created_url);
       if (!response.ok) {
         throw new Error("Failed to fetch movie data");
       }
       const data = await response.json();
       if (firstLoad) {
-        console.log(data.total_pages);
+        // console.log(data.total_pages);
         setMaxPages(data.total_pages);
       }
       setMovieData((prev) => {
@@ -86,7 +115,7 @@ const App = () => {
 
   // handler function to update search query variable
   const handleSearch = (newSearch) => {
-    console.log("in handle search");
+    // console.log("in handle search");
     setSearchQuery(newSearch);
   };
 
@@ -97,27 +126,33 @@ const App = () => {
     // reset to first page
     setPage(1);
     fetchGenres();
-    fetchData(PRESENT_NOW_PLAYING, true);
+    fetchData(PRESENT_NOW_PLAYING, true, "");
   }, []);
 
   // if user requests to load more data (page number changes) fetch data
   useEffect(() => {
+    console.log("in load more");
     if (page > 1) {
       if (searchView === "search") {
+        console.log("in search more");
         // fetchSearchData();
-        fetchData(PRESENT_SEARCH, false);
+        fetchData(PRESENT_SEARCH, false, "");
+      } else if (filter !== "") {
+        console.log("filter is ", filter);
+        console.log("in filter more");
+        fetchData(false, false, filter);
       } else {
-        fetchData(PRESENT_NOW_PLAYING, false);
+        console.log("in now playing more");
+        fetchData(PRESENT_NOW_PLAYING, false, "");
       }
     }
   }, [page]);
 
   useEffect(() => {
     if (searchView === "search") {
-      fetchData(PRESENT_SEARCH, true);
+      fetchData(PRESENT_SEARCH, true, "");
     }
   }, [searchQuery]);
-
 
   // reset page and movie data when view changes
   useEffect(() => {
@@ -126,6 +161,7 @@ const App = () => {
     setMovieData([]);
   }, [searchView]);
 
+
   const handleViewRequest = (viewRequest) => {
     if (viewRequest !== searchView) {
       setSearchView(viewRequest);
@@ -133,7 +169,7 @@ const App = () => {
         console.log("clicked search");
       } else {
         console.log("clicked now playing");
-        fetchData(PRESENT_NOW_PLAYING, true);
+        fetchData(PRESENT_NOW_PLAYING, true, "");
       }
     }
   };
@@ -141,17 +177,32 @@ const App = () => {
   // open the modal
   const handleOpenModal = () => {
     setModalOpen(true);
-  }
+  };
 
   // close the modal
   const handleCloseModal = () => {
     setModalOpen(false);
-  }
+  };
 
+  // handle modal presented on screen
   const handleLoadModal = (newData) => {
     setModalData(newData);
   };
 
+  // handle change to filter
+  const handleFilterRequest = (newFilter) => {
+    // console.log("filter changed");
+    // setPage(1);
+    // setMovieData([]);
+    setFilter(newFilter);
+  };
+
+  useEffect (() => {
+    console.log("filter changed");
+    setPage(1);
+    setMovieData([]);
+    fetchData(false, true, filter);
+  }, [filter]);
 
   let searchBar =
     searchView === "search" ? <SearchForm onSearch={handleSearch} /> : <></>;
@@ -163,16 +214,24 @@ const App = () => {
         {/* <SearchForm onSearch={handleSearch} /> */}
         {/* display search bar only when search view requested */}
         <div>
+          <FilterMenu onFilter={handleFilterRequest} />
           <NavBar onViewRequest={handleViewRequest} />
           {searchBar}
         </div>
       </header>
       <main>
         {/* data is the .results (the array of actual movie data) */}
-        {console.log(maxPages)}
-        {console.log(page)}
-        <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={maxPages !== page} onOpenModal={handleOpenModal} onLoadModal={handleLoadModal} genreData={genreData}/>
-        {modalOpen && <Modal onCloseModal={handleCloseModal} modalData={modalData}/>}
+        <MovieList
+          onLoadMore={handleLoadMore}
+          data={movieData}
+          morePages={maxPages !== page}
+          onOpenModal={handleOpenModal}
+          onLoadModal={handleLoadModal}
+          genreData={genreData}
+        />
+        {modalOpen && (
+          <Modal onCloseModal={handleCloseModal} modalData={modalData} />
+        )}
       </main>
     </div>
   );

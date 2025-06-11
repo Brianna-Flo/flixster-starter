@@ -6,7 +6,6 @@ const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
 const Modal = ({ onCloseModal, modalData}) => {
   const handleModalClose = (event) => {
-    console.log("pressed close");
     onCloseModal();
   };
 
@@ -17,7 +16,6 @@ const Modal = ({ onCloseModal, modalData}) => {
         <img id="movie-img" width="100%" src={`${IMG_URL}${modalData.backdrop}`} />
         <p id="release-date">Release Date: {modalData.releaseDate}</p>
         <p id="overview">Overview: {modalData.overview}</p>
-        {console.log("movie genres ", modalData.genres)}
         <p id="genres">Genres: {modalData.genres.join(', ')}</p>
         <button className="close" onClick={handleModalClose}>
           Close

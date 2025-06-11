@@ -5,7 +5,6 @@ import MovieCard from './MovieCard';
 import { parseMovieData } from './utils/utils'
 
 const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genreData }) => {
-    console.log("more pages", morePages)
     if (data.length === 0) {
         return <p>No search matches ;-;</p>
     }
@@ -23,7 +22,6 @@ const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genr
     const parsedMovies = parseMovieData(data, genreData);
     // create an array filtering out movies with null images
     const filteredMovies = parsedMovies.filter((movie) => movie.image !== null);
-    console.log(filteredMovies);
     // display button only if there are more pages to load
     let content = <></>;
     if (morePages) {

@@ -15,9 +15,7 @@ const parseMovieData = (movieData, genreData) => {
 
 // return an array of genres for a single movie
 const extractGenres = (movieData, genreData) => {
-    console.log("genre data ", genreData);
     const movieGenreIds = movieData.genre_ids;
-    console.log(movieGenreIds);
     return movieGenreIds.map(genre_id => (genreData.find((genre) => genre.id === genre_id).name));
 }
 

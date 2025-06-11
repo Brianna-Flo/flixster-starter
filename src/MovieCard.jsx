@@ -9,7 +9,7 @@ const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 const MovieCard = ({data, onOpenModal, onLoadModal}) => {
     // handle click to open movie card
     const handleCardClick = (event) => {
-        console.log("modal clicked");
+        // console.log("modal clicked");
         onOpenModal();
         onLoadModal(data);
     }
