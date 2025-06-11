@@ -10,7 +10,7 @@ const FilterMenu = ({ onFilter }) => {
 
     return (
         <div>
-            <label for="filter">Filter by: </label>
+            <label htmlFor="filter">Filter by: </label>
             <select id="filter" name="filter" onChange={handleFilterChange}>
                 <option id="none" value="">None</option>
                 <option id="title" value="title.asc">Title</option>

@@ -7,6 +7,7 @@ import data from "./data/data.js";
 import NavBar from "./NavBar";
 import Modal from "./Modal";
 import FilterMenu from "./FilterMenu";
+import Footer from "./Footer";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const NOW_PLAYING = "/movie/now_playing";
@@ -215,6 +216,7 @@ const App = () => {
           <Modal onCloseModal={handleCloseModal} modalData={modalData} />
         )}
       </main>
+      <Footer />
     </div>
   );
 };
