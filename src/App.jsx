@@ -14,6 +14,8 @@ const SEARCH_REQUEST = "/search/movie";
 const FILTER_REQUEST = "/discover/movie";
 const PRESENT_SEARCH = true;
 const PRESENT_NOW_PLAYING = false;
+const firstLoad = true;
+const loadMore = false;
 
 const App = () => {
   // useState function to update movieData variable
@@ -48,25 +50,6 @@ const App = () => {
     }
   };
 
-  const fetchFiltered = async () => {
-    try {
-      const apiKey = import.meta.env.VITE_API_KEY;
-      const response = await fetch(
-        `${BASE_URL}${FILTER_REQUEST}?api_key=${apiKey}&sort_by=${filter}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch genre data");
-      }
-      const data = await response.json();
-      setMaxPages(data.total_pages);
-      setMovieData((prev) => {
-        return data.results;
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const fetchGenres = async () => {
     try {
       const apiKey = import.meta.env.VITE_API_KEY;
@@ -93,7 +76,6 @@ const App = () => {
       }
       const data = await response.json();
       if (firstLoad) {
-        // console.log(data.total_pages);
         setMaxPages(data.total_pages);
       }
       setMovieData((prev) => {
@@ -126,31 +108,31 @@ const App = () => {
     // reset to first page
     setPage(1);
     fetchGenres();
-    fetchData(PRESENT_NOW_PLAYING, true, "");
+    fetchData(PRESENT_NOW_PLAYING, firstLoad, "");
   }, []);
 
   // if user requests to load more data (page number changes) fetch data
   useEffect(() => {
     console.log("in load more");
     if (page > 1) {
-      if (searchView === "search") {
+      if (searchView === "search") { // load pages in search view
         console.log("in search more");
         // fetchSearchData();
-        fetchData(PRESENT_SEARCH, false, "");
-      } else if (filter !== "") {
+        fetchData(PRESENT_SEARCH, loadMore, "");
+      } else if (filter !== "") { // load another page for filter
         console.log("filter is ", filter);
         console.log("in filter more");
-        fetchData(false, false, filter);
-      } else {
+        fetchData(false, loadMore, filter);
+      } else { // load another page from now playing
         console.log("in now playing more");
-        fetchData(PRESENT_NOW_PLAYING, false, "");
+        fetchData(PRESENT_NOW_PLAYING, loadMore, "");
       }
     }
   }, [page]);
 
   useEffect(() => {
     if (searchView === "search") {
-      fetchData(PRESENT_SEARCH, true, "");
+      fetchData(PRESENT_SEARCH, firstLoad, "");
     }
   }, [searchQuery]);
 
@@ -169,7 +151,7 @@ const App = () => {
         console.log("clicked search");
       } else {
         console.log("clicked now playing");
-        fetchData(PRESENT_NOW_PLAYING, true, "");
+        fetchData(PRESENT_NOW_PLAYING, firstLoad, "");
       }
     }
   };
@@ -201,7 +183,7 @@ const App = () => {
     console.log("filter changed");
     setPage(1);
     setMovieData([]);
-    fetchData(false, true, filter);
+    fetchData(false, firstLoad, filter);
   }, [filter]);
 
   let searchBar =

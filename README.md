@@ -15,7 +15,7 @@ Submitted by: **NAME**
 
 Estimated time spent: **#** hours spent in total
 
-Deployed Application (**required**): [Flixster Deployed Site](ADD_LINK_HERE)
+Deployed Application (**required**): [Flixster Deployed Site] https://flixster-starter-djtw.onrender.com/
 
 ### Application Features
 
