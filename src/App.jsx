@@ -19,9 +19,11 @@ const App = () => {
   const [page, setPage] = useState(1);
   // used to hold the entire list of movies
   const [searchQuery, setSearchQuery] = useState("");
+  // whether we are going to dispaly search results or now playing movies
+  const [searchView, setSearchView] = useState("playing");
+  // keep track of total pages
+  const [maxPages, setMaxPages] = useState(1);
   
-  let MAX_PAGE;
-
   const createURL = (isSearch, firstLoad) => {
     const apiKey = import.meta.env.VITE_API_KEY;
     const pageNum = firstLoad ? 1 : page;
@@ -40,8 +42,11 @@ const App = () => {
       }
       const data = await response.json();
       // set max page
-      MAX_PAGE = data.total_pages !== page;
-      // console.log("total pages", MAX_PAGE)
+      // MAX_PAGE = data.total_pages !== page;
+      if (firstLoad) {
+        console.log(data.total_pages);
+        setMaxPages(data.total_pages);
+      }
       setMovieData((prev) => {
         if (firstLoad) {
           return data.results;
@@ -92,8 +97,6 @@ const App = () => {
     }
   }, [searchQuery]);
 
-  // whether we are going to dispaly search results or now playing movies
-  const [searchView, setSearchView] = useState("playing");
 
   // reset page and movie data when view changes
   useEffect(() => {
@@ -118,7 +121,7 @@ const App = () => {
       // setPage(1);
       if (viewRequest === "search") {
         console.log("clicked search");
-        setMovieData([]);
+        // setMovieData([]);
       } else {
         console.log("clicked now playing");
         // setPage(1);
@@ -145,9 +148,9 @@ const App = () => {
       </header>
       <main>
         {/* data is the .results (the array of actual movie data) */}
-        {/* {console.log(MAX_PAGE)}
-        {console.log(page)} */}
-        <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={MAX_PAGE} />
+        {console.log(maxPages)}
+        {console.log(page)}
+        <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={maxPages !== page} />
       </main>
     </div>
   );
