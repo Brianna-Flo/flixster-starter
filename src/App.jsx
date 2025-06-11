@@ -5,6 +5,8 @@ import MovieList from "./MovieList";
 import SearchForm from "./SearchForm";
 import data from "./data/data.js";
 import NavBar from "./NavBar";
+import Modal from './Modal';
+
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const NOW_PLAYING = "/movie/now_playing";
@@ -41,8 +43,6 @@ const App = () => {
         throw new Error("Failed to fetch movie data");
       }
       const data = await response.json();
-      // set max page
-      // MAX_PAGE = data.total_pages !== page;
       if (firstLoad) {
         console.log(data.total_pages);
         setMaxPages(data.total_pages);
@@ -151,6 +151,7 @@ const App = () => {
         {console.log(maxPages)}
         {console.log(page)}
         <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={maxPages !== page} />
+        <Modal />
       </main>
     </div>
   );
