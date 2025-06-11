@@ -3,7 +3,8 @@ const parseMovieData = (movieData) => {
     return movieData.map(movie => ({
         title: movie.original_title,
         rating: movie.vote_average,
-        image: movie.poster_path
+        image: movie.poster_path,
+        id: movie.id
     }));
 }
 

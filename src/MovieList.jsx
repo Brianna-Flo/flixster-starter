@@ -13,7 +13,6 @@ const MovieList = ({ onLoadMore, data }) => {
     }
 
     // create an array containing only necessary movie data
-    console.log(data);
     const parsedMovies = parseMovieData(data);
     return (
         <div>
@@ -23,7 +22,7 @@ const MovieList = ({ onLoadMore, data }) => {
                 parsedMovies.map((movie) => {
                     return (
                         // create a movie card component for each movie in array using parsed data
-                        <MovieCard key={movie.title} image={movie.image} title={movie.title} rating={movie.rating} />
+                        <MovieCard key={movie.id} image={movie.image} title={movie.title} rating={movie.rating} />
                     )
                 })
             }
