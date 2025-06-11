@@ -4,6 +4,7 @@ import "./App.css";
 import MovieList from "./MovieList";
 import SearchForm from "./SearchForm";
 import data from "./data/data.js";
+import NavBar from "./NavBar";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const NOW_PLAYING = "/movie/now_playing";
@@ -46,44 +47,6 @@ const App = () => {
       console.error(error);
     }
   };
-
-  // get data for now playing movies
-  // const fetchData = async () => {
-  //   try {
-  //     // const apiKey = import.meta.env.VITE_API_KEY;
-  //     // const response = await fetch(`${BASE_URL}${NOW_PLAYING}?api_key=${apiKey}&page=${page}`);
-  //     const response = await fetch(createURL(false));
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch movie data');
-  //     }
-  //     const data = await response.json();
-  //     // setMovieData((prev) => {
-  //     //   return [...prev, ...data.results]
-  //     // });
-  //     setMovieData([...movieData, ...data.results]);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
-  // const fetchSearchData = async () => {
-  //   try {
-  //     // const apiKey = import.meta.env.VITE_API_KEY;
-  //     // const response = await fetch(`${BASE_URL}${SEARCH_REQUEST}?api_key=${apiKey}&query=${searchQuery}&page=${page}`);
-  //     const response = await fetch(createURL(true));
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch movie data');
-  //     }
-  //     const data = await response.json();
-  //     // use callback since we know prev is updated, movieData might not be updated yet ASYNC
-  //     setMovieData((prev) => {
-  //       return [...prev, ...data.results]
-  //     })
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
   // handle load when page increases
   const handleLoadMore = () => {
     // increment page number
@@ -95,9 +58,15 @@ const App = () => {
     setSearchQuery(newSearch);
   };
 
+  // // load on mount
+  // useEffect(() => {
+  //   fetchData(PRESENT_NOW_PLAYING, true);
+  // }, []);
+
   // if user requests to load more data (page number changes) fetch data
   useEffect(() => {
-    if (searchQuery !== "") {
+    // if (searchQuery !== "") {
+    if (searchView === 'true') {
       // fetchSearchData();
       fetchData(PRESENT_SEARCH, false);
     } else {
@@ -105,13 +74,9 @@ const App = () => {
     }
   }, [page]);
 
-  // load on mount
   useEffect(() => {
-    fetchData(PRESENT_NOW_PLAYING, true);
-  }, []);
-
-  useEffect(() => {
-    if (searchQuery !== "") {
+    // if (searchQuery !== "") {
+    if (searchView === 'true') {
       // reset data to empty
       setMovieData([]);
       // reset to first page
@@ -121,11 +86,44 @@ const App = () => {
     }
   }, [searchQuery]);
 
+
+    // whether we are going to dispaly search results or now playing movies
+    const[searchView, setSearchView] = useState('false');
+    // let searchBar = <></>;
+
+    const handleViewRequest = (viewRequest) => {
+      // reset page when we change views
+      // setMovieData([]);
+      // setPage(1);
+      // if (viewRequest) { // if we are in search mode
+      //   searchBar = <SearchForm onSearch={handleSearch} />;
+      // } else {
+      //   searchBar =  <></>;
+      //   fetchData(PRESENT_NOW_PLAYING, true);
+      // }
+      if (viewRequest !== searchView) {
+        setSearchView (viewRequest);
+        setPage(1);
+        if (viewRequest === 'true') {
+          console.log('clicked search')
+          setMovieData([]);
+        } else {
+          console.log('clicked now playing')
+          fetchData(PRESENT_NOW_PLAYING, true);
+        }
+      }
+    }
+    let searchBar = searchView === 'true' ? <SearchForm onSearch={handleSearch} /> : <></>
+
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Flixter</h1>
-        <SearchForm onSearch={handleSearch} />
+        {/* <SearchForm onSearch={handleSearch} /> */}
+        {/* display search bar only when search view requested */}
+        {searchBar}
+        <NavBar onViewRequest={handleViewRequest}/>
       </header>
       <main>
         {/* data is the .results (the array of actual movie data) */}
