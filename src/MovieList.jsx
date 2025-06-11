@@ -4,7 +4,7 @@ import MovieCard from './MovieCard';
 
 import { parseMovieData } from './utils/utils'
 
-const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal }) => {
+const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genreData }) => {
     console.log("more pages", morePages)
     if (data.length === 0) {
         return <p>No search matches ;-;</p>
@@ -20,7 +20,7 @@ const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal }) =>
     // }
 
     // create an array containing only necessary movie data
-    const parsedMovies = parseMovieData(data);
+    const parsedMovies = parseMovieData(data, genreData);
     // create an array filtering out movies with null images
     const filteredMovies = parsedMovies.filter((movie) => movie.image !== null);
     console.log(filteredMovies);

@@ -14,7 +14,6 @@ const SEARCH_REQUEST = "/search/movie";
 const PRESENT_SEARCH = true;
 const PRESENT_NOW_PLAYING = false;
 
-
 const App = () => {
   // useState function to update movieData variable
   const [movieData, setMovieData] = useState([]);
@@ -30,6 +29,8 @@ const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
   // hold the data for the modal that is open
   const [modalData, setModalData] = useState({});
+  // hold array of genre data
+  const [genreData, setGenreData] = useState([]);
   
   const createURL = (isSearch, firstLoad) => {
     const apiKey = import.meta.env.VITE_API_KEY;
@@ -38,6 +39,20 @@ const App = () => {
       return `${BASE_URL}${SEARCH_REQUEST}?api_key=${apiKey}&query=${searchQuery}&page=${pageNum}`;
     } else {
       return `${BASE_URL}${NOW_PLAYING}?api_key=${apiKey}&page=${pageNum}`;
+    }
+  };
+
+  const fetchGenres = async () => {
+    try {
+      const apiKey = import.meta.env.VITE_API_KEY;
+      const response = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch genre data");
+      }
+      const data = await response.json();
+      setGenreData(data.genres);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -81,6 +96,7 @@ const App = () => {
     setMovieData([]);
     // reset to first page
     setPage(1);
+    fetchGenres();
     fetchData(PRESENT_NOW_PLAYING, true);
   }, []);
 
@@ -155,7 +171,7 @@ const App = () => {
         {/* data is the .results (the array of actual movie data) */}
         {console.log(maxPages)}
         {console.log(page)}
-        <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={maxPages !== page} onOpenModal={handleOpenModal} onLoadModal={handleLoadModal}/>
+        <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={maxPages !== page} onOpenModal={handleOpenModal} onLoadModal={handleLoadModal} genreData={genreData}/>
         {modalOpen && <Modal onCloseModal={handleCloseModal} modalData={modalData}/>}
       </main>
     </div>

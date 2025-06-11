@@ -14,10 +14,11 @@ const Modal = ({ onCloseModal, modalData}) => {
     <div className="modal" id="movie-modal">
       <div className="modal-content">
         <h2 id="movie-title">{modalData.title}</h2>
-        <img id="movie-img" width="100px" src={`${IMG_URL}${modalData.image}`} />
+        <img id="movie-img" width="100%" src={`${IMG_URL}${modalData.backdrop}`} />
         <p id="release-date">Release Date: {modalData.releaseDate}</p>
         <p id="overview">Overview: {modalData.overview}</p>
-        <p id="genres">Genres: {modalData.genres}</p>
+        {console.log("movie genres ", modalData.genres)}
+        <p id="genres">Genres: {modalData.genres.join(', ')}</p>
         <button className="close" onClick={handleModalClose}>
           Close
         </button>
