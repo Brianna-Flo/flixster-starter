@@ -5,7 +5,7 @@ import MovieCard from './MovieCard';
 import { parseMovieData } from './utils/utils'
 
 const MovieList = ({ onLoadMore, data, morePages }) => {
-    console.log("more pages", morePages)
+    // console.log("more pages", morePages)
     if (data.length === 0) {
         return <p>No search matches ;-;</p>
     }

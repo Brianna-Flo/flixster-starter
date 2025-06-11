@@ -41,7 +41,7 @@ const App = () => {
       const data = await response.json();
       // set max page
       MAX_PAGE = data.total_pages !== page;
-      console.log("total pages", MAX_PAGE)
+      // console.log("total pages", MAX_PAGE)
       setMovieData((prev) => {
         if (firstLoad) {
           return data.results;
@@ -53,46 +53,41 @@ const App = () => {
       console.error(error);
     }
   };
-  // handle load when page increases
+
+  // increment page number when load more clicked
   const handleLoadMore = () => {
-    // increment page number
     setPage((page) => page + 1);
   };
 
   // handler function to update search query variable
   const handleSearch = (newSearch) => {
+    console.log("in handle search");
     setSearchQuery(newSearch);
   };
 
-  // // load on mount
-  // useEffect(() => {
-  //   fetchData(PRESENT_NOW_PLAYING, true);
-  // }, []);
-
-  // useEffect(() => {
-  //   setPage(1);
-  // }, []);
+  // load on mount
+  useEffect(() => {
+    // reset data to empty
+    setMovieData([]);
+    // reset to first page
+    setPage(1);
+    fetchData(PRESENT_NOW_PLAYING, true);
+  }, []);
 
   // if user requests to load more data (page number changes) fetch data
   useEffect(() => {
-    // if (searchQuery !== "") {
-    if (searchView === "search") {
-      // fetchSearchData();
-      fetchData(PRESENT_SEARCH, false);
-    } else {
-      fetchData(PRESENT_NOW_PLAYING, false);
+    if (page > 1) {
+      if (searchView === "search") {
+        // fetchSearchData();
+        fetchData(PRESENT_SEARCH, false);
+      } else {
+        fetchData(PRESENT_NOW_PLAYING, false);
+      }
     }
   }, [page]);
 
   useEffect(() => {
-    // if (searchQuery !== "") {
     if (searchView === "search") {
-      console.log("search query changed");
-      // reset data to empty
-      setMovieData([]);
-      // reset to first page
-      setPage(1);
-      // fetchSearchData();
       fetchData(PRESENT_SEARCH, true);
     }
   }, [searchQuery]);
@@ -100,6 +95,7 @@ const App = () => {
   // whether we are going to dispaly search results or now playing movies
   const [searchView, setSearchView] = useState("playing");
 
+  // reset page and movie data when view changes
   useEffect(() => {
     console.log("view changed");
     setPage(1);
@@ -119,7 +115,7 @@ const App = () => {
     if (viewRequest !== searchView) {
       setSearchView(viewRequest);
       // setMovieData([]);
-      setPage(1);
+      // setPage(1);
       if (viewRequest === "search") {
         console.log("clicked search");
         setMovieData([]);
@@ -149,8 +145,8 @@ const App = () => {
       </header>
       <main>
         {/* data is the .results (the array of actual movie data) */}
-        {console.log(MAX_PAGE)}
-        {console.log(page)}
+        {/* {console.log(MAX_PAGE)}
+        {console.log(page)} */}
         <MovieList onLoadMore={handleLoadMore} data={movieData} morePages={MAX_PAGE} />
       </main>
     </div>
