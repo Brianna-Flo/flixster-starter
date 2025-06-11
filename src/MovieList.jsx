@@ -6,6 +6,9 @@ import { parseMovieData } from './utils/utils'
 
 const MovieList = ({ onLoadMore, data }) => {
 
+    if (data.length === 0) {
+        return <p>No search matches ;-;</p>
+    }
     // handler function for clicking load more movies (increment page by 1)
     const handleClick = (event) => {
         event.preventDefault();
@@ -16,6 +19,7 @@ const MovieList = ({ onLoadMore, data }) => {
     const parsedMovies = parseMovieData(data);
     // create an array filtering out movies with null images
     const filteredMovies = parsedMovies.filter((movie) => movie.image !== null);
+    console.log(filteredMovies);
     return (
         <div>
             <div className="movie-card-container">

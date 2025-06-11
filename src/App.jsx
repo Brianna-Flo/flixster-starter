@@ -28,7 +28,7 @@ const App = () => {
     }
   };
 
-  const fetchData = async (isSearch) => {
+  const fetchData = async (isSearch, firstLoad) => {
     try {
       const response = await fetch(createURL(isSearch));
       if (!response.ok) {
@@ -36,7 +36,11 @@ const App = () => {
       }
       const data = await response.json();
       setMovieData((prev) => {
-        return [...prev, ...data.results];
+        if (firstLoad) {
+          return data.results;
+        } else {
+          return [...prev, ...data.results];
+        }
       });
     } catch (error) {
       console.error(error);
@@ -95,11 +99,16 @@ const App = () => {
   useEffect(() => {
     if (searchQuery !== "") {
       // fetchSearchData();
-      fetchData(PRESENT_SEARCH);
+      fetchData(PRESENT_SEARCH, false);
     } else {
-      fetchData(PRESENT_NOW_PLAYING);
+      fetchData(PRESENT_NOW_PLAYING, false);
     }
   }, [page]);
+
+  // load on mount
+  useEffect(() => {
+    fetchData(PRESENT_NOW_PLAYING, true);
+  }, []);
 
   useEffect(() => {
     if (searchQuery !== "") {
@@ -108,7 +117,7 @@ const App = () => {
       // reset to first page
       setPage(1);
       // fetchSearchData();
-      fetchData(PRESENT_SEARCH);
+      fetchData(PRESENT_SEARCH, true);
     }
   }, [searchQuery]);
 

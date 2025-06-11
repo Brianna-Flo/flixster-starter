@@ -16,10 +16,10 @@ const MovieCard = ({image, title, rating}) => {
     )
 }
 
-MovieCard.propTypes = {
-    image: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    rating: PropTypes.string.isRequired
-}
+// MovieCard.propTypes = {
+//     image: PropTypes.string.isRequired,
+//     title: PropTypes.string.isRequired,
+//     rating: PropTypes.string.isRequired
+// }
 
 export default MovieCard;
