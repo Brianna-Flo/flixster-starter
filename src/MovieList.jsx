@@ -14,12 +14,14 @@ const MovieList = ({ onLoadMore, data }) => {
 
     // create an array containing only necessary movie data
     const parsedMovies = parseMovieData(data);
+    // create an array filtering out movies with null images
+    const filteredMovies = parsedMovies.filter((movie) => movie.image !== null);
     return (
         <div>
             <div className="movie-card-container">
             {
                 // create a new array of MovieCard components
-                parsedMovies.map((movie) => {
+                filteredMovies.map((movie) => {
                     return (
                         // create a movie card component for each movie in array using parsed data
                         <MovieCard key={movie.id} image={movie.image} title={movie.title} rating={movie.rating} />
