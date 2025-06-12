@@ -19,4 +19,5 @@ const extractGenres = (movieData, genreData) => {
     return movieGenreIds.map(genre_id => (genreData.find((genre) => genre.id === genre_id).name));
 }
 
+
 export { parseMovieData };

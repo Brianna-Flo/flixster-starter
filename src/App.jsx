@@ -35,17 +35,17 @@ const App = () => {
   const [modalData, setModalData] = useState({});
   // hold array of genre data
   const [genreData, setGenreData] = useState([]);
-  // the current filter to present
-  const [filter, setFilter] = useState("");
+  // the current filter to present, holds a function to sort movieData with
+  const [filter, setFilter] = useState(false);
 
-  const createURL = (isSearch, firstLoad, newFilter) => {
+  const createURL = (isSearch, firstLoad) => {
     const apiKey = import.meta.env.VITE_API_KEY;
     const pageNum = firstLoad ? 1 : page;
     if (isSearch) {
       return `${BASE_URL}${SEARCH_REQUEST}?api_key=${apiKey}&query=${searchQuery}&page=${pageNum}`;
-    } else if (newFilter !== "") {
-      console.log("creating filter url for ", filter);
-      return `${BASE_URL}${FILTER_REQUEST}?api_key=${apiKey}&sort_by=${filter}&page=${pageNum}`;
+    // } else if (newFilter !== "") {
+    //   console.log("creating filter url for ", filter);
+    //   return `${BASE_URL}${FILTER_REQUEST}?api_key=${apiKey}&sort_by=${filter}&page=${pageNum}`;
     } else {
       return `${BASE_URL}${NOW_PLAYING}?api_key=${apiKey}&page=${pageNum}`;
     }
@@ -67,9 +67,9 @@ const App = () => {
     }
   };
 
-  const fetchData = async (isSearch, firstLoad, newFilter) => {
+  const fetchData = async (isSearch, firstLoad) => {
     try {
-      const created_url = createURL(isSearch, firstLoad, filter);
+      const created_url = createURL(isSearch, firstLoad);
       console.log("url is ", created_url);
       const response = await fetch(created_url);
       if (!response.ok) {
@@ -109,7 +109,7 @@ const App = () => {
     // reset to first page
     setPage(1);
     fetchGenres();
-    fetchData(PRESENT_NOW_PLAYING, firstLoad, "");
+    fetchData(PRESENT_NOW_PLAYING, firstLoad);
   }, []);
 
   // if user requests to load more data (page number changes) fetch data
@@ -119,21 +119,21 @@ const App = () => {
       if (searchView === "search") { // load pages in search view
         console.log("in search more");
         // fetchSearchData();
-        fetchData(PRESENT_SEARCH, loadMore, "");
+        fetchData(PRESENT_SEARCH, loadMore);
       } else if (filter !== "") { // load another page for filter
         console.log("filter is ", filter);
         console.log("in filter more");
-        fetchData(false, loadMore, filter);
+        fetchData(false, loadMore);
       } else { // load another page from now playing
         console.log("in now playing more");
-        fetchData(PRESENT_NOW_PLAYING, loadMore, "");
+        fetchData(PRESENT_NOW_PLAYING, loadMore);
       }
     }
   }, [page]);
 
   useEffect(() => {
     if (searchView === "search") {
-      fetchData(PRESENT_SEARCH, firstLoad, "");
+      fetchData(PRESENT_SEARCH, firstLoad);
     }
   }, [searchQuery]);
 
@@ -152,7 +152,7 @@ const App = () => {
         console.log("clicked search");
       } else {
         console.log("clicked now playing");
-        fetchData(PRESENT_NOW_PLAYING, firstLoad, "");
+        fetchData(PRESENT_NOW_PLAYING, firstLoad);
       }
     }
   };
@@ -173,18 +173,20 @@ const App = () => {
   };
 
   // handle change to filter
-  const handleFilterRequest = (newFilter) => {
-    // console.log("filter changed");
-    // setPage(1);
-    // setMovieData([]);
-    setFilter(newFilter);
+  // const handleFilterRequest = (newFilter) => {
+  //   setFilter(newFilter);
+    
+  //   // movieData.sort(filter);
+  // };
+  const handleFilterRequest = (newData) => {
+    console.log(newData);
+    setMovieData(newData);
+    setFilter((filter) => !filter);
   };
 
-  useEffect (() => {
-    console.log("filter changed");
-    setPage(1);
-    setMovieData([]);
-    fetchData(false, firstLoad, filter);
+  useEffect (() => {    
+    // fetchData(false, firstLoad);
+    // movieData.sort(filter);
   }, [filter]);
 
   let searchBar =
@@ -197,7 +199,7 @@ const App = () => {
         {/* <SearchForm onSearch={handleSearch} /> */}
         {/* display search bar only when search view requested */}
         <div>
-          <FilterMenu onFilter={handleFilterRequest} />
+          <FilterMenu onFilter={handleFilterRequest} movieData={movieData}/>
           <NavBar onViewRequest={handleViewRequest} />
           {searchBar}
         </div>

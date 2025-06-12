@@ -1,10 +1,18 @@
 body {
   background-color: #1c1c1e;
+  height: 100%;
+}
+
+html {
+  height: 100%;
 }
 
 .App {
   text-align: center;
   /* background-color: #1c1c1e; */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .App-header {
@@ -20,6 +28,10 @@ body {
 
 .Footer {
   background-color: #d7263d;
+}
+
+main {
+  flex: 1;
 }
 
 @media (max-width: 600px) {
