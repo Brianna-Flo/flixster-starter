@@ -36,6 +36,7 @@ const App = () => {
   // array of favorite movies
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [watchedMovies, setWatchedMovies] = useState([]);
+  const [fetchingData, setFetchingData] = useState(false);
 
   // load on mount
   useEffect(() => {
@@ -75,9 +76,11 @@ const App = () => {
     } else if (searchView === "favorites") {
       console.log(favoriteMovies);
       setMovieData(favoriteMovies);
+      setFetchingData(false);
     } else if (searchView === "watched") {
       console.log(watchedMovies);
       setMovieData(watchedMovies);
+      setFetchingData(false);
     } 
   }, [searchView]);
 
@@ -129,6 +132,7 @@ const App = () => {
         setMaxPages(data.total_pages);
         // console.log('setting max pages', maxPages)
       }
+      setFetchingData(true);
       setMovieData((prev) => {
         if (firstLoad) {
           return data.results;
@@ -193,6 +197,10 @@ const App = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(favoriteMovies);
+  }, [favoriteMovies])
+
   // watch is boolean whether movie was watched
   // movie is the data of the movie watched
   const handleWatchedMovie = (watch, movie) => {
@@ -210,6 +218,9 @@ const App = () => {
   const handleViewRequest = (viewRequest) => {
     if (viewRequest !== searchView) {
       setSearchView(viewRequest);
+      if ((searchView === "favorites" || searchView === "watched") && viewRequest === "playing") {
+        setFetchingData(false);
+      }
     }
   };
 
@@ -275,7 +286,7 @@ const App = () => {
           genreData={genreData}
           onFavorite={handleFavoriteMovie}
           onWatch={handleWatchedMovie}
-          view={searchView}
+          fetching={fetchingData}
         />
         {modalOpen && (
           <Modal onCloseModal={handleCloseModal} modalData={modalData} />

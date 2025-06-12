@@ -1,10 +1,12 @@
 import React from 'react';
 import './MovieList.css'
 import MovieCard from './MovieCard';
+import { useState, useEffect } from "react";
+
 
 import { parseMovieData } from './utils/utils'
 
-const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genreData, onFavorite, onWatch, view }) => {
+const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genreData, onFavorite, onWatch, fetching }) => {
     if (data.length === 0) {
         return <p>No search matches</p>
     }
@@ -15,7 +17,7 @@ const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genr
     }
 
     let filteredMovies = data;
-    if (view === "playing" || view === "search") {
+    if (fetching) {
         // create an array containing only necessary movie data
         const parsedMovies = parseMovieData(data, genreData);
         // create an array filtering out movies with null images
