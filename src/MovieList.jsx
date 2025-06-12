@@ -6,7 +6,7 @@ import { parseMovieData } from './utils/utils'
 
 const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genreData }) => {
     if (data.length === 0) {
-        return <p>No search matches ;-;</p>
+        return <p>No search matches</p>
     }
     // handler function for clicking load more movies (increment page by 1)
     const handleClick = (event) => {

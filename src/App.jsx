@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-// import MovieCard from './MovieCard';
 import MovieList from "./MovieList";
 import SearchForm from "./SearchForm";
-import data from "./data/data.js";
 import NavBar from "./NavBar";
 import Modal from "./Modal";
 import FilterMenu from "./FilterMenu";
@@ -172,6 +170,33 @@ const App = () => {
     setModalData(newData);
   };
 
+  // when modal data changes, load details like the runtime
+  useEffect(() => {
+    if(modalData.id && modalData.runtime === '') {
+      extractRuntime(modalData.id);
+    }
+  }, [modalData])
+
+  const extractRuntime = async (movie_id) => {
+    try {
+        const apiKey = import.meta.env.VITE_API_KEY;
+        const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${apiKey}`);
+        if (!response.ok) {
+        throw new Error("Failed to fetch movie details");
+        }
+        const data = await response.json();
+        console.log(data);
+        console.log(data.runtime);
+        const runtime = data.runtime;
+        setModalData((prev) => ({
+          ...prev,
+          runtime
+        }));
+    } catch (error) {
+        console.error(error);
+    }
+  }
+
   // handle change to filter
   // const handleFilterRequest = (newFilter) => {
   //   setFilter(newFilter);
@@ -185,8 +210,7 @@ const App = () => {
   };
 
   useEffect (() => {    
-    // fetchData(false, firstLoad);
-    // movieData.sort(filter);
+
   }, [filter]);
 
   let searchBar =
@@ -196,7 +220,6 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>Flixter</h1>
-        {/* <SearchForm onSearch={handleSearch} /> */}
         {/* display search bar only when search view requested */}
         <div>
           <FilterMenu onFilter={handleFilterRequest} movieData={movieData}/>

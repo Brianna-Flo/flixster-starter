@@ -17,6 +17,7 @@ const Modal = ({ onCloseModal, modalData}) => {
         <p id="release-date">Release Date: {modalData.releaseDate}</p>
         <p id="overview">Overview: {modalData.overview}</p>
         <p id="genres">Genres: {modalData.genres.join(', ')}</p>
+        <p id="runtime">Runtime: {modalData.runtime}</p>
         <button className="close" onClick={handleModalClose}>
           Close
         </button>
