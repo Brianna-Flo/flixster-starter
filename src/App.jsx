@@ -53,7 +53,7 @@ const App = () => {
       if (searchView === "search") {
         // load pages in search view
         fetchData(PRESENT_SEARCH, LOAD_MORE);
-      } else {
+      } else if (searchView === "playing") {
         // load another page from now playing
         fetchData(PRESENT_NOW_PLAYING, LOAD_MORE);
       }
@@ -72,7 +72,13 @@ const App = () => {
     setMovieData([]);
     if (searchView === "playing") {
       fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
-    }
+    } else if (searchView === "favorites") {
+      console.log(favoriteMovies);
+      setMovieData(favoriteMovies);
+    } else if (searchView === "watched") {
+      console.log(watchedMovies);
+      setMovieData(watchedMovies);
+    } 
   }, [searchView]);
 
   // when modal data changes, load runtime details
@@ -269,6 +275,7 @@ const App = () => {
           genreData={genreData}
           onFavorite={handleFavoriteMovie}
           onWatch={handleWatchedMovie}
+          view={searchView}
         />
         {modalOpen && (
           <Modal onCloseModal={handleCloseModal} modalData={modalData} />

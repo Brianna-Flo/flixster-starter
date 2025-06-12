@@ -11,7 +11,9 @@ const NavBar = ({onViewRequest}) => {
     return (
         <nav>
             <button onClick={handleNavClick} value='playing'>Now Playing</button>
-            <button onClick={handleNavClick}value='search'>Search</button>
+            <button onClick={handleNavClick} value='search'>Search</button>
+            <button onClick={handleNavClick} value='favorites'>Favorites</button>
+            <button onClick={handleNavClick} value='watched'>Watched</button>
         </nav>
     );
 }

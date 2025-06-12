@@ -4,7 +4,7 @@ import MovieCard from './MovieCard';
 
 import { parseMovieData } from './utils/utils'
 
-const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genreData, onFavorite, onWatch }) => {
+const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genreData, onFavorite, onWatch, view }) => {
     if (data.length === 0) {
         return <p>No search matches</p>
     }
@@ -14,10 +14,15 @@ const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genr
         onLoadMore ();
     }
 
-    // create an array containing only necessary movie data
-    const parsedMovies = parseMovieData(data, genreData);
-    // create an array filtering out movies with null images
-    const filteredMovies = parsedMovies.filter((movie) => movie.image !== null);
+    let filteredMovies = data;
+    if (view === "playing" || view === "search") {
+        // create an array containing only necessary movie data
+        const parsedMovies = parseMovieData(data, genreData);
+        // create an array filtering out movies with null images
+        filteredMovies = parsedMovies.filter((movie) => movie.image !== null);
+    }
+
+
     // display button only if there are more pages to load
     let content = <></>;
     if (morePages) {
