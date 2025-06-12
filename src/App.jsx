@@ -178,10 +178,11 @@ const App = () => {
     let updatedMovie = movie;
     if (favorite) {
       // if movie was favorited
-      updatedMovie = { ...movie, favorited: true };
-      setFavoriteMovies([...favoriteMovies, updatedMovie]);
+      // updatedMovie = { ...movie, favorited: true };
+      setFavoriteMovies((prev) => [...prev, movie]);
+      console.log('movie was favorited');
     } else {
-      updatedMovie = { ...movie, favorited: false };
+      // updatedMovie = { ...movie, favorited: false };
       setFavoriteMovies(favoriteMovies.filter((curr) => curr.id !== movie.id));
     }
   };

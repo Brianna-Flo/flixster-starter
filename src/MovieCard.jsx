@@ -20,8 +20,11 @@ const MovieCard = ({data, onOpenModal, onLoadModal, onFavorite }) => {
     const handleFavoriteClick = (event) => {
         event.stopPropagation();
         setFavorite((prev) => !prev)
-        onFavorite(favorite, data)
     }
+
+    useEffect (() => {
+        onFavorite(favorite, data);
+    }, [favorite])
 
     const favorited = <FontAwesomeIcon icon={solidHeart} id="favorited" className="heart" onClick={handleFavoriteClick}/>
     const notFavorited = <FontAwesomeIcon icon={heartOutline} id="not-favorited" className="heart" onClick={handleFavoriteClick}/>
