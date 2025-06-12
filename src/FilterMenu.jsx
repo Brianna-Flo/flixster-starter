@@ -57,11 +57,6 @@ const FilterMenu = ({ onFilter, movieData }) => {
         <div>
             <label htmlFor="filter">Filter by: </label>
             <select id="filter" name="filter" onChange={handleFilterChange}>
-                {/* <option id="none" value="">None</option>
-                <option id="title" value="title.asc">Title</option>
-                <option id="release-date" value="primary_release_date.desc&release_date.lte=2025-06-15&region=US&with_release_type=3">Release Date</option>
-                <option id="vote-average" value="vote_average.desc&region=US&with_release_type=3">Vote Average</option> */}
-
                 <option id="none" value="">None</option>
                 <option id="title" value="title">Title</option>
                 <option id="release-date" value="release-date">Release Date</option>

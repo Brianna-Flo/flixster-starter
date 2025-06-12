@@ -10,11 +10,10 @@ import Footer from "./Footer";
 const BASE_URL = "https://api.themoviedb.org/3";
 const NOW_PLAYING = "/movie/now_playing";
 const SEARCH_REQUEST = "/search/movie";
-const FILTER_REQUEST = "/discover/movie";
 const PRESENT_SEARCH = true;
 const PRESENT_NOW_PLAYING = false;
-const firstLoad = true;
-const loadMore = false;
+const FIRST_LOAD = true;
+const LOAD_MORE = false;
 
 const App = () => {
   // useState function to update movieData variable
@@ -33,22 +32,19 @@ const App = () => {
   const [modalData, setModalData] = useState({});
   // hold array of genre data
   const [genreData, setGenreData] = useState([]);
-  // the current filter to present, holds a function to sort movieData with
-  const [filter, setFilter] = useState(false);
 
+  // creates a url to fetch from dependent on if searching or not
   const createURL = (isSearch, firstLoad) => {
     const apiKey = import.meta.env.VITE_API_KEY;
     const pageNum = firstLoad ? 1 : page;
     if (isSearch) {
       return `${BASE_URL}${SEARCH_REQUEST}?api_key=${apiKey}&query=${searchQuery}&page=${pageNum}`;
-    // } else if (newFilter !== "") {
-    //   console.log("creating filter url for ", filter);
-    //   return `${BASE_URL}${FILTER_REQUEST}?api_key=${apiKey}&sort_by=${filter}&page=${pageNum}`;
     } else {
       return `${BASE_URL}${NOW_PLAYING}?api_key=${apiKey}&page=${pageNum}`;
     }
   };
 
+  // done at load, fetch genre array from API
   const fetchGenres = async () => {
     try {
       const apiKey = import.meta.env.VITE_API_KEY;
@@ -68,7 +64,6 @@ const App = () => {
   const fetchData = async (isSearch, firstLoad) => {
     try {
       const created_url = createURL(isSearch, firstLoad);
-      console.log("url is ", created_url);
       const response = await fetch(created_url);
       if (!response.ok) {
         throw new Error("Failed to fetch movie data");
@@ -96,14 +91,14 @@ const App = () => {
 
   // handler function to update search query variable
   const handleSearch = (newSearch) => {
-    // console.log("in handle search");
     setSearchQuery(newSearch);
   };
 
+  // handler function to update the search view to playing and load now playing cards
   const handleClear = () => {
     setSearchView('playing');
-    fetchData(PRESENT_NOW_PLAYING, firstLoad);
-  }
+    fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
+  };
 
   // load on mount
   useEffect(() => {
@@ -112,51 +107,39 @@ const App = () => {
     // reset to first page
     setPage(1);
     fetchGenres();
-    fetchData(PRESENT_NOW_PLAYING, firstLoad);
+    fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
   }, []);
 
   // if user requests to load more data (page number changes) fetch data
   useEffect(() => {
-    console.log("in load more");
     if (page > 1) {
       if (searchView === "search") { // load pages in search view
-        console.log("in search more");
-        // fetchSearchData();
-        fetchData(PRESENT_SEARCH, loadMore);
-      } else if (filter !== "") { // load another page for filter
-        console.log("filter is ", filter);
-        console.log("in filter more");
-        fetchData(false, loadMore);
+        fetchData(PRESENT_SEARCH, LOAD_MORE);
       } else { // load another page from now playing
-        console.log("in now playing more");
-        fetchData(PRESENT_NOW_PLAYING, loadMore);
+        fetchData(PRESENT_NOW_PLAYING, LOAD_MORE);
       }
     }
   }, [page]);
 
   useEffect(() => {
     if (searchView === "search") {
-      fetchData(PRESENT_SEARCH, firstLoad);
+      fetchData(PRESENT_SEARCH, FIRST_LOAD);
     }
   }, [searchQuery]);
 
   // reset page and movie data when view changes
   useEffect(() => {
-    console.log("view changed");
     setPage(1);
     setMovieData([]);
+    if (searchView === "playing") {
+      fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
+    }
   }, [searchView]);
 
 
   const handleViewRequest = (viewRequest) => {
     if (viewRequest !== searchView) {
       setSearchView(viewRequest);
-      if (viewRequest === "search") {
-        console.log("clicked search");
-      } else {
-        console.log("clicked now playing");
-        fetchData(PRESENT_NOW_PLAYING, firstLoad);
-      }
     }
   };
 
@@ -175,7 +158,7 @@ const App = () => {
     setModalData(newData);
   };
 
-  // when modal data changes, load details like the runtime
+  // when modal data changes, load runtime details
   useEffect(() => {
     if(modalData.id && modalData.runtime === '') {
       extractRuntime(modalData.id);
@@ -190,8 +173,6 @@ const App = () => {
         throw new Error("Failed to fetch movie details");
         }
         const data = await response.json();
-        console.log(data);
-        console.log(data.runtime);
         const runtime = data.runtime;
         setModalData((prev) => ({
           ...prev,
@@ -202,21 +183,11 @@ const App = () => {
     }
   }
 
-  // handle change to filter
-  // const handleFilterRequest = (newFilter) => {
-  //   setFilter(newFilter);
-    
-  //   // movieData.sort(filter);
-  // };
   const handleFilterRequest = (newData) => {
-    console.log(newData);
-    setMovieData(newData);
-    setFilter((filter) => !filter);
+    setMovieData([...newData])
   };
 
-  useEffect (() => {    
 
-  }, [filter]);
 
   let searchBar =
     searchView === "search" ? <SearchForm onSearch={handleSearch} onClear={handleClear}/> : <></>;
