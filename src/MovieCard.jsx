@@ -20,6 +20,7 @@ const MovieCard = ({data, onOpenModal, onLoadModal, onFavorite, onWatch }) => {
     const handleFavoriteClick = (event) => {
         event.stopPropagation();
         setFavorite((prev) => !prev)
+        onFavorite(favorite, data);
     }
 
     useEffect (() => {

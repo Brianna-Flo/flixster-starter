@@ -6,6 +6,8 @@ import NavBar from "./NavBar";
 import Modal from "./Modal";
 import FilterMenu from "./FilterMenu";
 import Footer from "./Footer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const NOW_PLAYING = "/movie/now_playing";
@@ -37,6 +39,7 @@ const App = () => {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [watchedMovies, setWatchedMovies] = useState([]);
   const [fetchingData, setFetchingData] = useState(false);
+  const [toggleNav, setToggleNav] = useState(false);
 
   // load on mount
   useEffect(() => {
@@ -272,7 +275,11 @@ const App = () => {
       <header className="App-header">
         <FilterMenu onFilter={handleFilterRequest} movieData={movieData} />
         <div id="nav-bar">
-          <NavBar onViewRequest={handleViewRequest} />
+          <FontAwesomeIcon icon={faBars} className="nav-icon" onClick={() => {
+            setToggleNav((prev) => !prev)}}/>
+          {toggleNav && (          
+              <NavBar onViewRequest={handleViewRequest} />
+          )}
           {searchBar}
         </div>
       </header>
