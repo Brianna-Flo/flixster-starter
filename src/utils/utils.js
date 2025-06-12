@@ -11,6 +11,7 @@ const parseMovieData = (movieData, genreData) => {
         backdrop: movie.backdrop_path,
         runtime: '',
         trailer: '',
+        favorited: false,
     }));
 }
 

@@ -33,6 +33,56 @@ const App = () => {
   const [modalData, setModalData] = useState({});
   // hold array of genre data
   const [genreData, setGenreData] = useState([]);
+  // array of favorite movies
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
+
+  // load on mount
+  useEffect(() => {
+    // reset data to empty
+    setMovieData([]);
+    // reset to first page
+    setPage(1);
+    fetchGenres();
+    fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
+  }, []);
+
+  // if user requests to load more data (page number changes) fetch data
+  useEffect(() => {
+    if (page > 1) {
+      if (searchView === "search") {
+        // load pages in search view
+        fetchData(PRESENT_SEARCH, LOAD_MORE);
+      } else {
+        // load another page from now playing
+        fetchData(PRESENT_NOW_PLAYING, LOAD_MORE);
+      }
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (searchView === "search") {
+      fetchData(PRESENT_SEARCH, FIRST_LOAD);
+    }
+  }, [searchQuery]);
+
+  // reset page and movie data when view changes
+  useEffect(() => {
+    setPage(1);
+    setMovieData([]);
+    if (searchView === "playing") {
+      fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
+    }
+  }, [searchView]);
+
+  // when modal data changes, load runtime details
+  useEffect(() => {
+    if (modalData.id && modalData.runtime === "") {
+      extractRuntime(modalData.id);
+    }
+    if (modalData.id && modalData.trailer === "") {
+      extractTrailer(modalData.id);
+    }
+  }, [modalData]);
 
   // creates a url to fetch from dependent on if searching or not
   const createURL = (isSearch, firstLoad) => {
@@ -84,7 +134,6 @@ const App = () => {
     }
   };
 
-
   const extractRuntime = async (movie_id) => {
     try {
       const response = await fetch(
@@ -104,7 +153,7 @@ const App = () => {
     }
   };
 
-    const extractTrailer = async (movie_id) => {
+  const extractTrailer = async (movie_id) => {
     try {
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${API_KEY}`
@@ -113,14 +162,27 @@ const App = () => {
         throw new Error("Failed to fetch movie trailer");
       }
       const data = await response.json();
-      const trailer = `https://www.youtube.com/embed/${data.results[0].key}`;
-      console.log(trailer)
+      const official = data.results.filter((video) => video.official);
+      const trailer = `https://www.youtube.com/embed/${official[0].key}`;
+
       setModalData((prev) => ({
         ...prev,
         trailer: trailer,
       }));
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleFavoriteMovie = (favorite, movie) => {
+    let updatedMovie = movie;
+    if (favorite) {
+      // if movie was favorited
+      updatedMovie = { ...movie, favorited: true };
+      setFavoriteMovies([...favoriteMovies, updatedMovie]);
+    } else {
+      updatedMovie = { ...movie, favorited: false };
+      setFavoriteMovies(favoriteMovies.filter((curr) => curr.id !== movie.id));
     }
   };
 
@@ -165,54 +227,6 @@ const App = () => {
     fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
   };
 
-  // load on mount
-  useEffect(() => {
-    // reset data to empty
-    setMovieData([]);
-    // reset to first page
-    setPage(1);
-    fetchGenres();
-    fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
-  }, []);
-
-  // if user requests to load more data (page number changes) fetch data
-  useEffect(() => {
-    if (page > 1) {
-      if (searchView === "search") {
-        // load pages in search view
-        fetchData(PRESENT_SEARCH, LOAD_MORE);
-      } else {
-        // load another page from now playing
-        fetchData(PRESENT_NOW_PLAYING, LOAD_MORE);
-      }
-    }
-  }, [page]);
-
-  useEffect(() => {
-    if (searchView === "search") {
-      fetchData(PRESENT_SEARCH, FIRST_LOAD);
-    }
-  }, [searchQuery]);
-
-  // reset page and movie data when view changes
-  useEffect(() => {
-    setPage(1);
-    setMovieData([]);
-    if (searchView === "playing") {
-      fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
-    }
-  }, [searchView]);
-
-  // when modal data changes, load runtime details
-  useEffect(() => {
-    if (modalData.id && modalData.runtime === "") {
-      extractRuntime(modalData.id);
-    } 
-    if (modalData.id && modalData.trailer === "") {
-      extractTrailer(modalData.id);
-    }
-  }, [modalData]);
-
   let searchBar =
     searchView === "search" ? (
       <SearchForm onSearch={handleSearch} onClear={handleClear} />
@@ -222,7 +236,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <section id='banner'>
+      <section id="banner">
         <h1>Flixter</h1>
       </section>
       <header className="App-header">
@@ -240,6 +254,7 @@ const App = () => {
           onOpenModal={handleOpenModal}
           onLoadModal={handleLoadModal}
           genreData={genreData}
+          onFavorite={handleFavoriteMovie}
         />
         {modalOpen && (
           <Modal onCloseModal={handleCloseModal} modalData={modalData} />

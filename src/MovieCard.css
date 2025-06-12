@@ -10,6 +10,11 @@
   /* height: stretch; */
 }
 
+.movie-card:hover {
+  border: 5px solid #f9d923;
+  transform: scale(1.1);
+}
+
 h4,
 p {
   margin: 0;
@@ -32,6 +37,10 @@ p {
   display: flex;
   justify-content: flex-start;
   height: 20px;
+}
+
+.heart:hover{
+  transform: scale(1.4);
 }
 
 #favorited {

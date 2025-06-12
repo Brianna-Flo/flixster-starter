@@ -8,19 +8,21 @@ import { useState, useEffect } from "react";
 
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
-const MovieCard = ({data, onOpenModal, onLoadModal}) => {
+const MovieCard = ({data, onOpenModal, onLoadModal, onFavorite }) => {
     // handle click to open movie card
     const handleCardClick = (event) => {
         onOpenModal();
         onLoadModal(data);
     }
 
-    const [favorite, setFavorite] = useState();
+    const [favorite, setFavorite] = useState(false);
     
     const handleFavoriteClick = (event) => {
         event.stopPropagation();
         setFavorite((prev) => !prev)
+        onFavorite(favorite, data)
     }
+
     const favorited = <FontAwesomeIcon icon={solidHeart} id="favorited" className="heart" onClick={handleFavoriteClick}/>
     const notFavorited = <FontAwesomeIcon icon={heartOutline} id="not-favorited" className="heart" onClick={handleFavoriteClick}/>
 
