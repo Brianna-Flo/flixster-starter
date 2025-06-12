@@ -84,58 +84,29 @@ const App = () => {
     }
   };
 
-  // increment page number when load more clicked
-  const handleLoadMore = () => {
-    setPage((page) => page + 1);
-  };
 
-  // handler function to update search query variable
-  const handleSearch = (newSearch) => {
-    setSearchQuery(newSearch);
-  };
-
-  // handler function to update the search view to playing and load now playing cards
-  const handleClear = () => {
-    setSearchView('playing');
-    fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
-  };
-
-  // load on mount
-  useEffect(() => {
-    // reset data to empty
-    setMovieData([]);
-    // reset to first page
-    setPage(1);
-    fetchGenres();
-    fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
-  }, []);
-
-  // if user requests to load more data (page number changes) fetch data
-  useEffect(() => {
-    if (page > 1) {
-      if (searchView === "search") { // load pages in search view
-        fetchData(PRESENT_SEARCH, LOAD_MORE);
-      } else { // load another page from now playing
-        fetchData(PRESENT_NOW_PLAYING, LOAD_MORE);
+  const extractRuntime = async (movie_id) => {
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${API_KEY}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch movie details");
       }
+      const data = await response.json();
+      const runtime = data.runtime;
+      setModalData((prev) => ({
+        ...prev,
+        runtime,
+      }));
+    } catch (error) {
+      console.error(error);
     }
-  }, [page]);
+  };
 
-  useEffect(() => {
-    if (searchView === "search") {
-      fetchData(PRESENT_SEARCH, FIRST_LOAD);
-    }
-  }, [searchQuery]);
-
-  // reset page and movie data when view changes
-  useEffect(() => {
-    setPage(1);
-    setMovieData([]);
-    if (searchView === "playing") {
-      fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
-    }
-  }, [searchView]);
-
+  const handleFilterRequest = (newData) => {
+    setMovieData([...newData]);
+  };
 
   const handleViewRequest = (viewRequest) => {
     if (viewRequest !== searchView) {
@@ -158,38 +129,73 @@ const App = () => {
     setModalData(newData);
   };
 
-  // when modal data changes, load runtime details
-  useEffect(() => {
-    if(modalData.id && modalData.runtime === '') {
-      extractRuntime(modalData.id);
-    }
-  }, [modalData])
-
-  const extractRuntime = async (movie_id) => {
-    try {
-        const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${API_KEY}`);
-        if (!response.ok) {
-        throw new Error("Failed to fetch movie details");
-        }
-        const data = await response.json();
-        const runtime = data.runtime;
-        setModalData((prev) => ({
-          ...prev,
-          runtime
-        }));
-    } catch (error) {
-        console.error(error);
-    }
-  }
-
-  const handleFilterRequest = (newData) => {
-    setMovieData([...newData])
+  // increment page number when load more clicked
+  const handleLoadMore = () => {
+    setPage((page) => page + 1);
   };
 
+  // handler function to update search query variable
+  const handleSearch = (newSearch) => {
+    setSearchQuery(newSearch);
+  };
 
+  // handler function to update the search view to playing and load now playing cards
+  const handleClear = () => {
+    setSearchView("playing");
+    fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
+  };
+
+  // load on mount
+  useEffect(() => {
+    // reset data to empty
+    setMovieData([]);
+    // reset to first page
+    setPage(1);
+    fetchGenres();
+    fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
+  }, []);
+
+  // if user requests to load more data (page number changes) fetch data
+  useEffect(() => {
+    if (page > 1) {
+      if (searchView === "search") {
+        // load pages in search view
+        fetchData(PRESENT_SEARCH, LOAD_MORE);
+      } else {
+        // load another page from now playing
+        fetchData(PRESENT_NOW_PLAYING, LOAD_MORE);
+      }
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (searchView === "search") {
+      fetchData(PRESENT_SEARCH, FIRST_LOAD);
+    }
+  }, [searchQuery]);
+
+  // reset page and movie data when view changes
+  useEffect(() => {
+    setPage(1);
+    setMovieData([]);
+    if (searchView === "playing") {
+      fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
+    }
+  }, [searchView]);
+
+  // when modal data changes, load runtime details
+  useEffect(() => {
+    if (modalData.id && modalData.runtime === "") {
+      extractRuntime(modalData.id);
+    }
+  }, [modalData]);
 
   let searchBar =
-    searchView === "search" ? <SearchForm onSearch={handleSearch} onClear={handleClear}/> : <></>;
+    searchView === "search" ? (
+      <SearchForm onSearch={handleSearch} onClear={handleClear} />
+    ) : (
+      <></>
+    );
 
   return (
     <div className="App">
@@ -197,16 +203,13 @@ const App = () => {
         <h1>Flixter</h1>
       </banner>
       <header className="App-header">
-        {/* <h1>Flixter</h1> */}
-        {/* display search bar only when search view requested */}
-          <FilterMenu onFilter={handleFilterRequest} movieData={movieData}/>
-          <div id="nav-bar">
-            <NavBar onViewRequest={handleViewRequest} />
-            {searchBar}
-          </div>
+        <FilterMenu onFilter={handleFilterRequest} movieData={movieData} />
+        <div id="nav-bar">
+          <NavBar onViewRequest={handleViewRequest} />
+          {searchBar}
+        </div>
       </header>
       <main>
-        {/* data is the .results (the array of actual movie data) */}
         <MovieList
           onLoadMore={handleLoadMore}
           data={movieData}
