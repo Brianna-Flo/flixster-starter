@@ -32,11 +32,15 @@ p {
     margin: 0 7%;
 }
 
-.heart {
-  margin: 0px 0px 10px 10px;
+.buttons {
   display: flex;
-  justify-content: flex-start;
-  height: 20px;
+  justify-content: space-between;
+  margin: 0px 10px 10px 10px
+}
+
+.heart,
+.eye {
+  height: 25px;
 }
 
 .heart:hover{
@@ -44,14 +48,24 @@ p {
 }
 
 #favorited {
-  color: red;
+  color: #d7263d;
 }
 
 #not-favorited{
   color: white;
 }
 
+.eye:hover {
+  transform: scale(1.4);
+}
 
+#watched {
+  color: #f9d923;
+}
+
+#not-watched {
+  color: white;
+}
 
 @media (max-width: 600px) {
   /* phones */
