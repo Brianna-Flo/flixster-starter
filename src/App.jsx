@@ -35,6 +35,7 @@ const App = () => {
   const [genreData, setGenreData] = useState([]);
   // array of favorite movies
   const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const [watchedMovies, setWatchedMovies] = useState([]);
 
   // load on mount
   useEffect(() => {
@@ -175,17 +176,26 @@ const App = () => {
   };
 
   const handleFavoriteMovie = (favorite, movie) => {
-    let updatedMovie = movie;
     if (favorite) {
       // if movie was favorited
       // updatedMovie = { ...movie, favorited: true };
       setFavoriteMovies((prev) => [...prev, movie]);
       console.log('movie was favorited');
     } else {
-      // updatedMovie = { ...movie, favorited: false };
-      setFavoriteMovies(favoriteMovies.filter((curr) => curr.id !== movie.id));
+      setFavoriteMovies(favoriteMovies.filter((curr) => {return curr.id !== movie.id}));
+      console.log('movie was unfavorited')
     }
   };
+
+  // watch is boolean whether movie was watched
+  // movie is the data of the movie watched
+  const handleWatchedMovie = (watch, movie) => {
+    if (watch) { // if the movie was watched
+      setWatchedMovies((prev) => [...prev, movie]);
+    } else {
+      setWatchedMovies(watchedMovies.filter((curr) => {return curr.id !== movie.id}))
+    }
+  }
 
   const handleFilterRequest = (newData) => {
     setMovieData([...newData]);
@@ -206,6 +216,8 @@ const App = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
+  // toggle modal: param: true or false to open/close
 
   // handle modal presented on screen
   const handleLoadModal = (newData) => {
@@ -256,6 +268,7 @@ const App = () => {
           onLoadModal={handleLoadModal}
           genreData={genreData}
           onFavorite={handleFavoriteMovie}
+          onWatch={handleWatchedMovie}
         />
         {modalOpen && (
           <Modal onCloseModal={handleCloseModal} modalData={modalData} />
