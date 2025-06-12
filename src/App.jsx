@@ -100,6 +100,11 @@ const App = () => {
     setSearchQuery(newSearch);
   };
 
+  const handleClear = () => {
+    setSearchView('playing');
+    fetchData(PRESENT_NOW_PLAYING, firstLoad);
+  }
+
   // load on mount
   useEffect(() => {
     // reset data to empty
@@ -214,7 +219,7 @@ const App = () => {
   }, [filter]);
 
   let searchBar =
-    searchView === "search" ? <SearchForm onSearch={handleSearch} /> : <></>;
+    searchView === "search" ? <SearchForm onSearch={handleSearch} onClear={handleClear}/> : <></>;
 
   return (
     <div className="App">
