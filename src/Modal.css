@@ -17,8 +17,12 @@
    width: 50%; /* Could be more or less, depending on screen size */
    display: flex;
    flex-direction: column;
+   overflow: scroll;
 }
 
+#movie-trailer {
+   height: 400px;
+}
 
 .close {
    color: #aaa;

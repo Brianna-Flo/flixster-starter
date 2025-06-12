@@ -18,6 +18,7 @@ const Modal = ({ onCloseModal, modalData}) => {
         <p id="overview">Overview: {modalData.overview}</p>
         <p id="genres">Genres: {modalData.genres.join(', ')}</p>
         <p id="runtime">Runtime: {modalData.runtime}</p>
+        <iframe id="movie-trailer" src={modalData.trailer}></iframe>
         <button className="close" onClick={handleModalClose}>
           Close
         </button>

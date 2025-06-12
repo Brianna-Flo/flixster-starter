@@ -97,7 +97,27 @@ const App = () => {
       const runtime = data.runtime;
       setModalData((prev) => ({
         ...prev,
-        runtime,
+        runtime: runtime,
+      }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+    const extractTrailer = async (movie_id) => {
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${API_KEY}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch movie trailer");
+      }
+      const data = await response.json();
+      const trailer = `https://www.youtube.com/embed/${data.results[0].key}`;
+      console.log(trailer)
+      setModalData((prev) => ({
+        ...prev,
+        trailer: trailer,
       }));
     } catch (error) {
       console.error(error);
@@ -187,6 +207,9 @@ const App = () => {
   useEffect(() => {
     if (modalData.id && modalData.runtime === "") {
       extractRuntime(modalData.id);
+    } 
+    if (modalData.id && modalData.trailer === "") {
+      extractTrailer(modalData.id);
     }
   }, [modalData]);
 
@@ -199,9 +222,9 @@ const App = () => {
 
   return (
     <div className="App">
-      <banner>
+      <section id='banner'>
         <h1>Flixter</h1>
-      </banner>
+      </section>
       <header className="App-header">
         <FilterMenu onFilter={handleFilterRequest} movieData={movieData} />
         <div id="nav-bar">
