@@ -70,7 +70,7 @@ const App = () => {
   // reset page and movie data when view changes
   useEffect(() => {
     setPage(1);
-    setMovieData([]);
+    // setMovieData([]);
     if (searchView === "playing") {
       fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
     } else if (searchView === "favorites") {

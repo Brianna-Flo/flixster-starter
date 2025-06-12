@@ -23,6 +23,7 @@ const MovieCard = ({data, onOpenModal, onLoadModal, onFavorite, onWatch }) => {
     }
 
     useEffect (() => {
+        // console.log("favorite is", favorite);
         onFavorite(favorite, data);
     }, [favorite])
 
@@ -47,7 +48,7 @@ const MovieCard = ({data, onOpenModal, onLoadModal, onFavorite, onWatch }) => {
     
 
     return (
-        <div className="movie-card" onClick={() => handleCardClick()}>
+        <div className={`movie-card ${favorite}`} onClick={() => handleCardClick()}>
             <img className="movie-poster" src={`${IMG_URL}${data.image}`} alt={data.title}/>
             <div className="movie-info">
                 <h4>{data.title}</h4>
