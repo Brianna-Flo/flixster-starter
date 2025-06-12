@@ -1,10 +1,9 @@
 import React from "react";
 import "./Modal.css";
 
-const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+const IMG_URL = "https://image.tmdb.org/t/p/w500";
 
-
-const Modal = ({ onCloseModal, modalData}) => {
+const Modal = ({ onCloseModal, modalData }) => {
   const handleModalClose = (event) => {
     onCloseModal();
   };
@@ -13,12 +12,25 @@ const Modal = ({ onCloseModal, modalData}) => {
     <section className="modal" id="movie-modal">
       <div className="modal-content">
         <h2 id="movie-title">{modalData.title}</h2>
-        <img id="movie-img" width="100%" src={`${IMG_URL}${modalData.backdrop}`} />
+        <img
+          id="movie-img"
+          width="100%"
+          src={`${IMG_URL}${modalData.backdrop}`}
+        />
         <p id="release-date">Release Date: {modalData.releaseDate}</p>
         <p id="overview">Overview: {modalData.overview}</p>
-        <p id="genres">Genres: {modalData.genres.join(', ')}</p>
+        <p id="genres">Genres: {modalData.genres.join(", ")}</p>
         <p id="runtime">Runtime: {modalData.runtime}</p>
-        <iframe id="movie-trailer" src={modalData.trailer}></iframe>
+        <iframe
+          width="560"
+          height="315"
+          src={modalData.trailer}
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
         <button className="close" onClick={handleModalClose}>
           Close
         </button>
