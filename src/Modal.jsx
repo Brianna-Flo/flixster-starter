@@ -10,7 +10,7 @@ const Modal = ({ onCloseModal, modalData}) => {
   };
 
   return (
-    <div className="modal" id="movie-modal">
+    <section className="modal" id="movie-modal">
       <div className="modal-content">
         <h2 id="movie-title">{modalData.title}</h2>
         <img id="movie-img" width="100%" src={`${IMG_URL}${modalData.backdrop}`} />
@@ -22,7 +22,7 @@ const Modal = ({ onCloseModal, modalData}) => {
           Close
         </button>
       </div>
-    </div>
+    </section>
   );
 };
 

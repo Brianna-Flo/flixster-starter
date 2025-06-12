@@ -10,6 +10,7 @@ import Footer from "./Footer";
 const BASE_URL = "https://api.themoviedb.org/3";
 const NOW_PLAYING = "/movie/now_playing";
 const SEARCH_REQUEST = "/search/movie";
+const API_KEY = import.meta.env.VITE_API_KEY;
 const PRESENT_SEARCH = true;
 const PRESENT_NOW_PLAYING = false;
 const FIRST_LOAD = true;
@@ -35,21 +36,19 @@ const App = () => {
 
   // creates a url to fetch from dependent on if searching or not
   const createURL = (isSearch, firstLoad) => {
-    const apiKey = import.meta.env.VITE_API_KEY;
     const pageNum = firstLoad ? 1 : page;
     if (isSearch) {
-      return `${BASE_URL}${SEARCH_REQUEST}?api_key=${apiKey}&query=${searchQuery}&page=${pageNum}`;
+      return `${BASE_URL}${SEARCH_REQUEST}?api_key=${API_KEY}&query=${searchQuery}&page=${pageNum}`;
     } else {
-      return `${BASE_URL}${NOW_PLAYING}?api_key=${apiKey}&page=${pageNum}`;
+      return `${BASE_URL}${NOW_PLAYING}?api_key=${API_KEY}&page=${pageNum}`;
     }
   };
 
   // done at load, fetch genre array from API
   const fetchGenres = async () => {
     try {
-      const apiKey = import.meta.env.VITE_API_KEY;
       const response = await fetch(
-        `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}`
+        `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch genre data");
@@ -71,6 +70,7 @@ const App = () => {
       const data = await response.json();
       if (firstLoad) {
         setMaxPages(data.total_pages);
+        // console.log('setting max pages', maxPages)
       }
       setMovieData((prev) => {
         if (firstLoad) {
@@ -167,8 +167,7 @@ const App = () => {
 
   const extractRuntime = async (movie_id) => {
     try {
-        const apiKey = import.meta.env.VITE_API_KEY;
-        const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${apiKey}`);
+        const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${API_KEY}`);
         if (!response.ok) {
         throw new Error("Failed to fetch movie details");
         }
@@ -194,14 +193,17 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <banner>
         <h1>Flixter</h1>
+      </banner>
+      <header className="App-header">
+        {/* <h1>Flixter</h1> */}
         {/* display search bar only when search view requested */}
-        <div>
           <FilterMenu onFilter={handleFilterRequest} movieData={movieData}/>
-          <NavBar onViewRequest={handleViewRequest} />
-          {searchBar}
-        </div>
+          <div id="nav-bar">
+            <NavBar onViewRequest={handleViewRequest} />
+            {searchBar}
+          </div>
       </header>
       <main>
         {/* data is the .results (the array of actual movie data) */}

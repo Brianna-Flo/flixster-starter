@@ -54,7 +54,7 @@ const FilterMenu = ({ onFilter, movieData }) => {
     }
 
     return (
-        <div>
+        <section id="filter">
             <label htmlFor="filter">Filter by: </label>
             <select id="filter" name="filter" onChange={handleFilterChange}>
                 <option id="none" value="">None</option>
@@ -62,7 +62,7 @@ const FilterMenu = ({ onFilter, movieData }) => {
                 <option id="release-date" value="release-date">Release Date</option>
                 <option id="vote-average" value="vote-average">Vote Average</option>
             </select>
-        </div>
+        </section>
     )
 }
 

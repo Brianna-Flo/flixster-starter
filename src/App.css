@@ -1,3 +1,9 @@
+banner {
+  background-color: #d7263d;
+  color: white;
+  padding: 0;
+}
+
 body {
   background-color: #1c1c1e;
   height: 100%;
@@ -17,17 +23,17 @@ html {
 
 .App-header {
   /* background-color: #282c34; */
+  /* background-color: #d7263d; */
   background-color: #d7263d;
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   color: #ffffff;
   padding: 20px 70px;
 }
 
-.Footer {
-  background-color: #d7263d;
+#nav-bar {
+  text-align: end;
 }
 
 main {

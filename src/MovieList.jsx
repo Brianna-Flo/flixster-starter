@@ -28,14 +28,13 @@ const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genr
         content = <button onClick={handleClick}>Load More</button>;
     }
     return (
-        <div>
+        <section>
             <div className="movie-card-container">
             {
                 // create a new array of MovieCard components
                 filteredMovies.map((movie) => {
                     return (
                         // create a movie card component for each movie in array using parsed data
-                        // <MovieCard key={movie.id} image={movie.image} title={movie.title} rating={movie.rating} onOpenModal={onOpenModal} onLoadModal={onLoadModal} />
                         <MovieCard key={movie.id} data={movie} onOpenModal={onOpenModal} onLoadModal={onLoadModal} />
                     )
                 })
@@ -44,7 +43,7 @@ const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genr
         
         {/* <button onClick={handleClick}>Load More</button> */}
         {content}
-        </div>
+        </section>
     )
 }
 
