@@ -80,7 +80,7 @@
   color: white;
 }
 
- @media (max-width: 480px) {
+@media (max-width: 480px) {
   .movie-card {
     flex: 1 1 300px;
     width: 80%;
@@ -98,19 +98,16 @@
   .movie-card {
     width: 45%;
   }
-
 }
 
 @media (min-width: 768px) {
   .movie-card {
     width: 30%;
   }
-
 }
 
 @media (min-width: 1024px) {
   .movie-card {
     width: 12%;
   }
-
 }

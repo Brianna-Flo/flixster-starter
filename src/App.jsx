@@ -6,8 +6,8 @@ import NavBar from "./NavBar";
 import Modal from "./Modal";
 import FilterMenu from "./FilterMenu";
 import Footer from "./Footer";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faTicket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faTicket } from "@fortawesome/free-solid-svg-icons";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const NOW_PLAYING = "/movie/now_playing";
@@ -193,25 +193,35 @@ const App = () => {
       // updatedMovie = { ...movie, favorited: true };
       setFavoriteMovies((prev) => {
         // check if we are favoriting and the movie wasnt already favorited
-        if (favorite && !(prev.some(curr => curr.id === movie.id))) {
-          return [...prev, movie]
+        if (favorite && !prev.some((curr) => curr.id === movie.id)) {
+          return [...prev, movie];
         } else {
           return prev;
-        }});
+        }
+      });
     } else {
-      setFavoriteMovies(favoriteMovies.filter((curr) => {return curr.id !== movie.id}));
+      setFavoriteMovies(
+        favoriteMovies.filter((curr) => {
+          return curr.id !== movie.id;
+        })
+      );
     }
   };
 
   // watch is boolean whether movie was watched
   // movie is the data of the movie watched
   const handleWatchedMovie = (watch, movie) => {
-    if (watch) { // if the movie was watched
+    if (watch) {
+      // if the movie was watched
       setWatchedMovies((prev) => [...prev, movie]);
     } else {
-      setWatchedMovies(watchedMovies.filter((curr) => {return curr.id !== movie.id}))
+      setWatchedMovies(
+        watchedMovies.filter((curr) => {
+          return curr.id !== movie.id;
+        })
+      );
     }
-  }
+  };
 
   const handleFilterRequest = (newData) => {
     setMovieData([...newData]);
@@ -220,7 +230,10 @@ const App = () => {
   const handleViewRequest = (viewRequest) => {
     if (viewRequest !== searchView) {
       setSearchView(viewRequest);
-      if ((searchView === "favorites" || searchView === "watched") && viewRequest === "playing") {
+      if (
+        (searchView === "favorites" || searchView === "watched") &&
+        viewRequest === "playing"
+      ) {
         setFetchingData(false);
       }
     }
@@ -240,7 +253,7 @@ const App = () => {
 
   const handleToggleNav = () => {
     setToggleNav((prev) => !prev);
-  }
+  };
 
   // toggle modal: param: true or false to open/close
 
@@ -269,14 +282,24 @@ const App = () => {
   return (
     <div className="App">
       <section id="banner">
-        <h1><FontAwesomeIcon icon={faTicket} className="gold"/> Flixter <FontAwesomeIcon icon={faTicket} className="gold"/></h1>
+        <h1>
+          <FontAwesomeIcon icon={faTicket} className="gold" /> Flixter{" "}
+          <FontAwesomeIcon icon={faTicket} className="gold" />
+        </h1>
       </section>
       <header className="App-header">
         <FilterMenu onFilter={handleFilterRequest} movieData={movieData} />
         <div id="nav-bar">
-          <FontAwesomeIcon icon={faBars} className="nav-icon" onClick={handleToggleNav}/>
-          {toggleNav && (          
-              <NavBar onViewRequest={handleViewRequest} onCloseNav={handleToggleNav}/>
+          <FontAwesomeIcon
+            icon={faBars}
+            className="nav-icon"
+            onClick={handleToggleNav}
+          />
+          {toggleNav && (
+            <NavBar
+              onViewRequest={handleViewRequest}
+              onCloseNav={handleToggleNav}
+            />
           )}
           <SearchForm onSearch={handleSearch} onClear={handleClear} />
         </div>
@@ -292,8 +315,8 @@ const App = () => {
           onFavorite={handleFavoriteMovie}
           onWatch={handleWatchedMovie}
           fetching={fetchingData}
-          favoriteMovies = {favoriteMovies}
-          watchedMovies = {watchedMovies}
+          favoriteMovies={favoriteMovies}
+          watchedMovies={watchedMovies}
         />
         {modalOpen && (
           <Modal onCloseModal={handleCloseModal} modalData={modalData} />

@@ -1,19 +1,8 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-📝 `NOTE` Use this template to initialize the contents of a README.md file for your application. As you work on your assignment over the course of the week, update the required or stretch features lists to indicate which features you have completed by changing `[ ]` to `[x]`. (🚫 Remove this paragraph before submitting your assignment.)
-
 ## Unit Assignment: Flixster
 
-Submitted by: **NAME**
+Submitted by: Brianna Flores
 
-Estimated time spent: **#** hours spent in total
+Estimated time spent: 30 hours spent in total
 
 Deployed Application (**required**): [Flixster Deployed Site] https://flixster-starter-djtw.onrender.com/
 
@@ -113,7 +102,14 @@ Deployed Application (**required**): [Flixster Deployed Site] https://flixster-s
 
 `TODO://` Add the embedded URL code to your animated app walkthrough below, `ADD_EMBEDDED_CODE_HERE`. Make sure the video or gif actually renders and animates when viewing this README. Ensure your walkthrough showcases the presence and/or functionality of all features you implemented above (check them off as you film!). Pay attention to any **VIDEO WALKTHROUGH SPECIAL INSTRUCTIONS** checkboxes listed above to ensure graders see the full functionality of your website! (🚫 Remove this paragraph after adding walkthrough video)
 
-`ADD_EMBEDDED_CODE_HERE`
+<div>
+    <a href="https://www.loom.com/share/d26c1c4a387e4185a03509c078053573">
+      <p>Brianna Flores Flixter Walkthrough - Watch Video</p>
+    </a>
+    <a href="https://www.loom.com/share/d26c1c4a387e4185a03509c078053573">
+      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/d26c1c4a387e4185a03509c078053573-8dd13cb3b6a9e1fd-full-play.gif">
+    </a>
+</div>
 
 ### Reflection
 
@@ -123,16 +119,18 @@ Yes, the content that we discussed throughout the week prepared me for this proj
 
 * If you had more time, what would you have done differently? Would you have added additional features? Changed the way your project responded to a particular event, etc.
   
-Add your response here
+I would have spent more time on css to make the design cleaner and more cohesive. I would have liked to also add an animation to open the modal and change the on hover for the movie cards to be a bit cleaner.
 
 * Reflect on your project demo, what went well? Were there things that maybe didn't go as planned? Did you notice something that your peer did that you would like to try next time?
 
-Add your response here
+The demo seemed to go well, I would have liked to maybe have it a bit smoother since I would frequently pause to check the readme and ensure I covered all of the checkpoints. As well, since I didnt share my entire screen I had to go back again to record another clip to show that the trailer did work. As well when looking for the colors I was unable to find them in the DOM so I had to pull up my css file in the code to show the color codes for the color contrast checker
 
 ### Open-source libraries used
 
-- Add any links to open-source libraries used in your project.
+(https://fontawesome.com/)
+(https://www.themoviedb.org/?language=en-US)
 
 ### Shout out
 
 Give a shout out to somebody from your cohort that especially helped you during your project. This can be a fellow peer, instructor, TA, mentor, etc.
+All of the TAs were great throughout the project and each helped me with different things like understanding content, a major bug, and ensuring all features were implemented, thank yall!!
