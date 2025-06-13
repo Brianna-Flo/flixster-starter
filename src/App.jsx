@@ -237,6 +237,10 @@ const App = () => {
     setModalOpen(false);
   };
 
+  const handleToggleNav = () => {
+    setToggleNav((prev) => !prev);
+  }
+
   // toggle modal: param: true or false to open/close
 
   // handle modal presented on screen
@@ -275,10 +279,9 @@ const App = () => {
       <header className="App-header">
         <FilterMenu onFilter={handleFilterRequest} movieData={movieData} />
         <div id="nav-bar">
-          <FontAwesomeIcon icon={faBars} className="nav-icon" onClick={() => {
-            setToggleNav((prev) => !prev)}}/>
+          <FontAwesomeIcon icon={faBars} className="nav-icon" onClick={handleToggleNav}/>
           {toggleNav && (          
-              <NavBar onViewRequest={handleViewRequest} />
+              <NavBar onViewRequest={handleViewRequest} onCloseNav={handleToggleNav}/>
           )}
           {searchBar}
         </div>
