@@ -17,6 +17,10 @@ html {
   height: 30px;
 }
 
+.nav-icon:hover {
+  cursor: pointer;
+}
+
 .App {
   text-align: center;
   /* background-color: #1c1c1e; */

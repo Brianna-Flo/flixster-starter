@@ -3,8 +3,6 @@ import './NavBar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart, faMagnifyingGlass, faTicket, faEye } from '@fortawesome/free-solid-svg-icons'
 
-// import { NavLink } from "react-router";
-
 const NavBar = ({onViewRequest, onCloseNav}) => {
     const handleNavClick = (event) => {
         event.preventDefault();

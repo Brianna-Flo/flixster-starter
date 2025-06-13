@@ -11,6 +11,7 @@ const Modal = ({ onCloseModal, modalData }) => {
   return (
     <section className="modal" id="movie-modal">
       <div className="modal-content">
+        <span className="modal-close" onClick={handleModalClose}>&times;</span>
         <h2 id="movie-title">{modalData.title}</h2>
         <img
           id="movie-img"
@@ -30,9 +31,9 @@ const Modal = ({ onCloseModal, modalData }) => {
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         ></iframe>
-        <button className="close" onClick={handleModalClose}>
+        {/* <button className="close" onClick={handleModalClose}>
           Close
-        </button>
+        </button> */}
       </div>
     </section>
   );

@@ -13,6 +13,7 @@
 .movie-card:hover {
   border: 5px solid #f9d923;
   transform: scale(1.1);
+  cursor: pointer;
 }
 
 h4,
@@ -38,13 +39,9 @@ p {
   margin: 0px 10px 10px 10px
 }
 
-.heart,
-.eye {
-  height: 25px;
-}
-
 .heart:hover{
   transform: scale(1.4);
+  cursor: pointer;
 }
 
 #favorited {
@@ -56,6 +53,7 @@ p {
 }
 
 .eye:hover {
+  cursor: pointer;
   transform: scale(1.4);
 }
 
@@ -67,60 +65,68 @@ p {
   color: white;
 }
 
-@media (max-width: 600px) {
-  /* phones */
+@media (max-width: 480px) {
   .movie-card {
     width: 80%;
   }
   h4 {
-    font-size: 15px;
+    font-size: 42px;
   }
   p {
-    font-size: 12px;
+    font-size: 24px;
   }
   .movie-info {
-    height: 60px;
+    height: 120px;
+  }
+  .heart,
+  .eye {
+    height: 30px;
   }
 }
 
-@media (min-width: 600px) {
-  /* tablets and large phones */
+@media (min-width: 480px) {
   .movie-card {
-    width: 18%;
+    width: 45%;
   }
   h4 {
-    font-size: 14px;
+    font-size: 26px;
   }
   p {
-    font-size: 12px;
+    font-size: 22px;
   }
   .movie-info {
-    height: 80px;
+    height: 120px;
+  }
+  .heart,
+  .eye {
+    height: 32px;
   }
 }
 
 @media (min-width: 768px) {
-  /* small laptops */
   .movie-card {
-    width: 15%;
+    width: 32%;
   }
   h4 {
-    font-size: 15px;
+    font-size: 32px;
   }
   p {
-    font-size: 12px;
+    font-size: 24px;
   }
   .movie-info {
-    height: 95px;
+    height: 170px;
+  }
+  .heart,
+  .eye {
+    height: 36px;
   }
 }
 
 @media (min-width: 1280px) {
-  /* large laptops */
   .movie-card {
-    width: 12%;
+    width: 15%;
   }
-h4 {
+  h4 {
     font-size: 22px;
   }
   p {
@@ -128,5 +134,9 @@ h4 {
   }
   .movie-info {
     height: 100px;
+  }
+  .heart,
+  .eye {
+    height: 28px;
   }
 }
