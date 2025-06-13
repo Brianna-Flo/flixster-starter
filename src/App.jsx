@@ -58,13 +58,6 @@ const App = () => {
   }, [page]);
 
   useEffect(() => {
-    if (view === "search") {
-      fetchData(PRESENT_SEARCH, FIRST_LOAD);
-    }
-  }, [searchQuery]);
-
-  // reset page and movie data when view changes
-  useEffect(() => {
     setPage(1);
     if (view === "playing") {
       fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
@@ -74,7 +67,9 @@ const App = () => {
     } else if (view === "watched") {
       setMovieData(watchedMovies);
       setFetchingData(false);
-    } 
+    } else if (view === "search") {
+      fetchData(PRESENT_SEARCH, FIRST_LOAD);
+    }
   }, [view]);
 
   // when modal data changes, load runtime details
@@ -234,7 +229,6 @@ const App = () => {
     setToggleNav((prev) => !prev);
   };
 
-  // handle modal presented on screen
   const handleLoadModal = (newData) => {
     setModalData(newData);
   };

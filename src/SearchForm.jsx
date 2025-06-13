@@ -8,11 +8,6 @@ const SearchForm = ({ onSearch, onClear }) => {
     onSearch(newSearch);
   };
 
-  const handleClear = (event) => {
-    // event.preventDefault();
-    onClear();
-  };
-
   return (
     <form className="search-form" onSubmit={handleSearch}>
       <input
@@ -24,7 +19,7 @@ const SearchForm = ({ onSearch, onClear }) => {
       <button className="search-btn" type="submit">
         Search
       </button>
-      <button className="clear-btn" type="reset" onClick={handleClear}>
+      <button className="clear-btn" type="reset" onClick={onClear}>
         Clear
       </button>
     </form>
