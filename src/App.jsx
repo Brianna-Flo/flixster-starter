@@ -36,9 +36,7 @@ const App = () => {
 
   // load on mount
   useEffect(() => {
-    // reset data to empty
     setMovieData([]);
-    // reset to first page
     setPage(1);
     fetchGenres();
     fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
@@ -57,6 +55,7 @@ const App = () => {
     }
   }, [page]);
 
+  // reset page and movie data when view changes
   useEffect(() => {
     setPage(1);
     if (view === "playing") {
@@ -70,9 +69,9 @@ const App = () => {
     } else if (view === "search") {
       fetchData(PRESENT_SEARCH, FIRST_LOAD);
     }
-  }, [view]);
+  }, [view, searchQuery]);
 
-  // when modal data changes, load runtime details
+  // when modal is opened, modal data changes and fetch runtime and trailer
   useEffect(() => {
     if (modalData.id && modalData.runtime === "") {
       extractRuntime(modalData.id);
@@ -223,12 +222,13 @@ const App = () => {
       }
       return !prev;
     });
-  }
+  };
 
   const handleToggleNav = () => {
     setToggleNav((prev) => !prev);
   };
 
+  // handle modal presented on screen
   const handleLoadModal = (newData) => {
     setModalData(newData);
   };
