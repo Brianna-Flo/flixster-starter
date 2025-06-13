@@ -1,6 +1,5 @@
 import React from "react";
 import "./MovieCard.css";
-import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart as solidHeart,
@@ -28,6 +27,18 @@ const MovieCard = ({
   };
 
   const [favorite, setFavorite] = useState(false);
+  const [watch, setWatch] = useState(false);
+
+  useEffect(() => {
+    // check if movie previously favorited
+    if (favoriteMovies.some((curr) => curr.id === data.id)) {
+      setFavorite(true);
+    }
+    // check if movie previously watched
+    if (watchedMovies.some((curr) => curr.id === data.id)) {
+      setWatch(true);
+    }
+  }, []);
 
   const handleFavoriteClick = (event) => {
     event.stopPropagation();
@@ -36,7 +47,6 @@ const MovieCard = ({
       return !prev;
     });
   };
-  const [watch, setWatch] = useState(false);
 
   const handleWatchedClick = (event) => {
     event.stopPropagation();
@@ -80,19 +90,6 @@ const MovieCard = ({
     />
   );
 
-  // check if movie previously favorited (in favorites list)
-  const checkIfFavorited = favoriteMovies.some((curr) => curr.id === data.id);
-  const checkIfWatched = watchedMovies.some((curr) => curr.id === data.id);
-
-  useEffect(() => {
-    if (checkIfFavorited) {
-      setFavorite(true);
-    }
-    if (checkIfWatched) {
-      setWatch(true);
-    }
-  }, []);
-
   return (
     <div className={`movie-card ${favorite}`} onClick={() => handleCardClick()}>
       <img
@@ -105,19 +102,11 @@ const MovieCard = ({
         <p>Rating: {data.rating}</p>
       </div>
       <div className="buttons">
-        {/* {(favorite || checkIfFavorited) ? favorited : notFavorited} */}
         {favorite ? favorited : notFavorited}
-        {/* {(watch || checkIfWatched) ? watched : notWatched} */}
         {watch ? watched : notWatched}
       </div>
     </div>
   );
 };
-
-// MovieCard.propTypes = {
-//     image: PropTypes.string.isRequired,
-//     title: PropTypes.string.isRequired,
-//     rating: PropTypes.string.isRequired
-// }
 
 export default MovieCard;

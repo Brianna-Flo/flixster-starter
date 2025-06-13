@@ -4,14 +4,11 @@ import "./Modal.css";
 const IMG_URL = "https://image.tmdb.org/t/p/w500";
 
 const Modal = ({ onCloseModal, modalData }) => {
-  const handleModalClose = (event) => {
-    onCloseModal();
-  };
 
   return (
     <section className="modal" id="movie-modal">
       <div className="modal-content">
-        <span className="modal-close" onClick={handleModalClose}>
+        <span className="modal-close" onClick={onCloseModal}>
           &times;
         </span>
         <h2 id="movie-title">{modalData.title}</h2>
@@ -43,9 +40,6 @@ const Modal = ({ onCloseModal, modalData }) => {
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         ></iframe>
-        {/* <button className="" onClick={handleModalClose}>
-          Close
-        </button> */}
       </div>
     </section>
   );

@@ -3,7 +3,6 @@ import "./NavBar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
-  faMagnifyingGlass,
   faHouse,
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
@@ -26,7 +25,6 @@ const NavBar = ({ onViewRequest, onCloseNav }) => {
       <button className="nav-btn" onClick={handleNavClick} value="playing">
         <FontAwesomeIcon icon={faHouse} /> Home
       </button>
-      {/* <button className="nav-btn" onClick={handleNavClick} value='search'><FontAwesomeIcon icon={faMagnifyingGlass} /> Search</button> */}
       <button className="nav-btn" onClick={handleNavClick} value="favorites">
         <FontAwesomeIcon icon={faHeart} /> Favorites
       </button>

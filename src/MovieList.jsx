@@ -17,7 +17,7 @@ const MovieList = ({
   fetching,
   favoriteMovies,
   watchedMovies,
-  view
+  view,
 }) => {
   if (data.length === 0) {
     return <p>No results?? Lets change that!!</p>;
@@ -37,9 +37,9 @@ const MovieList = ({
   }
 
   // display button only if there are more pages to load
-  let content = <></>;
-  if ((view !== "favorites" && view !== "watched") && morePages) {
-    content = <button onClick={handleClick}>Load More</button>;
+  let loadMore = <></>;
+  if (view !== "favorites" && view !== "watched" && morePages) {
+    loadMore = <button onClick={handleClick}>Load More</button>;
   }
   return (
     <section>
@@ -63,9 +63,7 @@ const MovieList = ({
           })
         }
       </div>
-
-      {/* <button onClick={handleClick}>Load More</button> */}
-      {content}
+      {loadMore}
     </section>
   );
 };
