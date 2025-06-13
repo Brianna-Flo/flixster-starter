@@ -23,7 +23,7 @@ const App = () => {
   // used for load more feature (keep track of page number)
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchView, setSearchView] = useState("playing");
+  const [view, setView] = useState("playing");
   // keep track of total pages for loadmore button display
   const [maxPages, setMaxPages] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
@@ -47,10 +47,10 @@ const App = () => {
   // if user requests to load more data (page number changes) fetch data
   useEffect(() => {
     if (page > 1) {
-      if (searchView === "search") {
+      if (view === "search") {
         // load pages in search view
         fetchData(PRESENT_SEARCH, LOAD_MORE);
-      } else if (searchView === "playing") {
+      } else if (view === "playing") {
         // load another page from now playing
         fetchData(PRESENT_NOW_PLAYING, LOAD_MORE);
       }
@@ -58,7 +58,7 @@ const App = () => {
   }, [page]);
 
   useEffect(() => {
-    if (searchView === "search") {
+    if (view === "search") {
       fetchData(PRESENT_SEARCH, FIRST_LOAD);
     }
   }, [searchQuery]);
@@ -66,19 +66,16 @@ const App = () => {
   // reset page and movie data when view changes
   useEffect(() => {
     setPage(1);
-    // setMovieData([]);
-    if (searchView === "playing") {
+    if (view === "playing") {
       fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
-    } else if (searchView === "favorites") {
+    } else if (view === "favorites") {
       setMovieData(favoriteMovies);
       setFetchingData(false);
-    } else if (searchView === "watched") {
+    } else if (view === "watched") {
       setMovieData(watchedMovies);
       setFetchingData(false);
-    } else {
-      setMovieData([]);
-    }
-  }, [searchView]);
+    } 
+  }, [view]);
 
   // when modal data changes, load runtime details
   useEffect(() => {
@@ -100,7 +97,6 @@ const App = () => {
     }
   };
 
-  // done at load, fetch genre array from API
   const fetchGenres = async () => {
     try {
       const response = await fetch(
@@ -170,7 +166,6 @@ const App = () => {
       const data = await response.json();
       const official = data.results.filter((video) => video.type === "Trailer");
       const trailer = `https://www.youtube.com/embed/${official[0].key}`;
-
       setModalData((prev) => ({
         ...prev,
         trailer: trailer,
@@ -182,10 +177,7 @@ const App = () => {
 
   const handleFavoriteMovie = (favorite, movie) => {
     if (favorite) {
-      // if movie was favorited
-      // updatedMovie = { ...movie, favorited: true };
       setFavoriteMovies((prev) => {
-        // check if we are favoriting and the movie wasnt already favorited
         if (favorite && !prev.some((curr) => curr.id === movie.id)) {
           return [...prev, movie];
         } else {
@@ -201,12 +193,15 @@ const App = () => {
     }
   };
 
-  // watch is boolean whether movie was watched
-  // movie is the data of the movie watched
   const handleWatchedMovie = (watch, movie) => {
     if (watch) {
-      // if the movie was watched
-      setWatchedMovies((prev) => [...prev, movie]);
+      setWatchedMovies((prev) => {
+        if (watch && !prev.some((curr) => curr.id === movie.id)) {
+          return [...prev, movie];
+        } else {
+          return prev;
+        }
+      });
     } else {
       setWatchedMovies(
         watchedMovies.filter((curr) => {
@@ -221,15 +216,7 @@ const App = () => {
   };
 
   const handleViewRequest = (viewRequest) => {
-    if (viewRequest !== searchView) {
-      setSearchView(viewRequest);
-      if (
-        (searchView === "favorites" || searchView === "watched") &&
-        viewRequest === "playing"
-      ) {
-        setFetchingData(false);
-      }
-    }
+    setView(viewRequest);
   };
 
   const toggleModal = () => {
@@ -260,12 +247,12 @@ const App = () => {
   // handler function to update search query variable
   const handleSearch = (newSearch) => {
     setSearchQuery(newSearch);
-    setSearchView("search");
+    setView("search");
   };
 
   // handler function to update the search view to playing and load now playing cards
   const handleClear = () => {
-    setSearchView("playing");
+    setView("playing");
     fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
   };
 
@@ -307,7 +294,7 @@ const App = () => {
           fetching={fetchingData}
           favoriteMovies={favoriteMovies}
           watchedMovies={watchedMovies}
-          searchView={searchView}
+          view={view}
         />
         {modalOpen && (
           <Modal onCloseModal={toggleModal} modalData={modalData} />
