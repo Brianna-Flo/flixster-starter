@@ -257,6 +257,7 @@ const App = () => {
   // handler function to update search query variable
   const handleSearch = (newSearch) => {
     setSearchQuery(newSearch);
+    setSearchView("search");
   };
 
   // handler function to update the search view to playing and load now playing cards
@@ -264,13 +265,6 @@ const App = () => {
     setSearchView("playing");
     fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
   };
-
-  let searchBar =
-    searchView === "search" ? (
-      <SearchForm onSearch={handleSearch} onClear={handleClear} />
-    ) : (
-      <></>
-    );
 
   return (
     <div className="App">
@@ -284,7 +278,7 @@ const App = () => {
           {toggleNav && (          
               <NavBar onViewRequest={handleViewRequest} onCloseNav={handleToggleNav}/>
           )}
-          {searchBar}
+          <SearchForm onSearch={handleSearch} onClear={handleClear} />
         </div>
       </header>
       <main>
