@@ -23,14 +23,7 @@ const MovieCard = ({data, onOpenModal, onLoadModal, onFavorite, onWatch, favorit
             onFavorite(!prev, data)
             return !prev
         })
-        // onFavorite(favorite, data);
     }
-
-    // useEffect (() => {
-    //     // console.log("favorite is", favorite);
-    //     onFavorite(favorite, data);
-    // }, [favorite])
-
     const [watch, setWatch] = useState(false);
 
     const handleWatchedClick = (event) => {
@@ -40,11 +33,6 @@ const MovieCard = ({data, onOpenModal, onLoadModal, onFavorite, onWatch, favorit
             return !prev
         })
     }
-
-    // when the watched button is clicked, call onwatch function to pass up the state of watched and the data of the movie to add to watch array in app
-    // useEffect (() => {
-    //     onWatch(watch, data);
-    // }, [watch])
 
     const watched = <FontAwesomeIcon icon={faEye} id="watched" className="eye" onClick={handleWatchedClick}/>
     const notWatched = <FontAwesomeIcon icon={faEyeSlash} id="not-watched" className="eye" onClick={handleWatchedClick}/>
@@ -64,7 +52,7 @@ const MovieCard = ({data, onOpenModal, onLoadModal, onFavorite, onWatch, favorit
         if(checkIfWatched) {
             setWatch(true);
         }
-    })
+    }, []);
 
     return (
         <div className={`movie-card ${favorite}`} onClick={() => handleCardClick()}>

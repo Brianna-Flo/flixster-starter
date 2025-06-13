@@ -77,11 +77,9 @@ const App = () => {
     if (searchView === "playing") {
       fetchData(PRESENT_NOW_PLAYING, FIRST_LOAD);
     } else if (searchView === "favorites") {
-      console.log(favoriteMovies);
       setMovieData(favoriteMovies);
       setFetchingData(false);
     } else if (searchView === "watched") {
-      console.log(watchedMovies);
       setMovieData(watchedMovies);
       setFetchingData(false);
     } else {
@@ -135,7 +133,6 @@ const App = () => {
       const data = await response.json();
       if (firstLoad) {
         setMaxPages(data.total_pages);
-        // console.log('setting max pages', maxPages)
       }
       setFetchingData(true);
       setMovieData((prev) => {
@@ -201,16 +198,10 @@ const App = () => {
         } else {
           return prev;
         }});
-      console.log('movie was favorited');
     } else {
       setFavoriteMovies(favoriteMovies.filter((curr) => {return curr.id !== movie.id}));
-      console.log('movie was unfavorited')
     }
   };
-
-  useEffect(() => {
-    console.log(favoriteMovies);
-  }, [favoriteMovies])
 
   // watch is boolean whether movie was watched
   // movie is the data of the movie watched

@@ -18,10 +18,10 @@ const Modal = ({ onCloseModal, modalData }) => {
           width="100%"
           src={`${IMG_URL}${modalData.backdrop}`}
         />
-        <p id="release-date">Release Date: {modalData.releaseDate}</p>
-        <p id="overview">Overview: {modalData.overview}</p>
-        <p id="genres">Genres: {modalData.genres.join(", ")}</p>
-        <p id="runtime">Runtime: {modalData.runtime}</p>
+        <p id="release-date"><b>Release Date:</b> {modalData.releaseDate}</p>
+        <p id="overview"><b>Overview: </b>{modalData.overview}</p>
+        <p id="genres"><b>Genres: </b>{modalData.genres.join(", ")}</p>
+        <p id="runtime"><b>Runtime:</b> {modalData.runtime}</p>
         <iframe
           width="560"
           height="315"

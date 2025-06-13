@@ -14,7 +14,6 @@ const FilterMenu = ({ onFilter, movieData }) => {
                 sortedData = movieData.sort(titleSort);
                 break;
             case "release-date":
-                console.log('in release date')
                 sortedData = movieData.sort(releaseSort);
                 break;
             case "vote-average":
