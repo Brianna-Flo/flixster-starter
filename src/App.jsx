@@ -19,23 +19,16 @@ const FIRST_LOAD = true;
 const LOAD_MORE = false;
 
 const App = () => {
-  // useState function to update movieData variable
   const [movieData, setMovieData] = useState([]);
   // used for load more feature (keep track of page number)
   const [page, setPage] = useState(1);
-  // used to hold the entire list of movies
   const [searchQuery, setSearchQuery] = useState("");
-  // whether we are going to dispaly search results or now playing movies
   const [searchView, setSearchView] = useState("playing");
-  // keep track of total pages
+  // keep track of total pages for loadmore button display
   const [maxPages, setMaxPages] = useState(1);
-  // keep track of whether modal is open or not
   const [modalOpen, setModalOpen] = useState(false);
-  // hold the data for the modal that is open
   const [modalData, setModalData] = useState({});
-  // hold array of genre data
   const [genreData, setGenreData] = useState([]);
-  // array of favorite movies
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [watchedMovies, setWatchedMovies] = useState([]);
   const [fetchingData, setFetchingData] = useState(false);
@@ -239,23 +232,20 @@ const App = () => {
     }
   };
 
-  // open the modal
-  const handleOpenModal = () => {
-    setModalOpen(true);
-    document.querySelector("body").className = "opened";
-  };
-
-  // close the modal
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    document.querySelector("body").className = "";
-  };
+  const toggleModal = () => {
+    setModalOpen((prev) => {
+      if (!prev) {
+        document.querySelector("body").className = "opened";
+      } else {
+        document.querySelector("body").className = "";
+      }
+      return !prev;
+    });
+  }
 
   const handleToggleNav = () => {
     setToggleNav((prev) => !prev);
   };
-
-  // toggle modal: param: true or false to open/close
 
   // handle modal presented on screen
   const handleLoadModal = (newData) => {
@@ -308,8 +298,8 @@ const App = () => {
         <MovieList
           onLoadMore={handleLoadMore}
           data={movieData}
-          morePages={maxPages !== page}
-          onOpenModal={handleOpenModal}
+          morePages={maxPages > page}
+          onOpenModal={toggleModal}
           onLoadModal={handleLoadModal}
           genreData={genreData}
           onFavorite={handleFavoriteMovie}
@@ -317,9 +307,10 @@ const App = () => {
           fetching={fetchingData}
           favoriteMovies={favoriteMovies}
           watchedMovies={watchedMovies}
+          searchView={searchView}
         />
         {modalOpen && (
-          <Modal onCloseModal={handleCloseModal} modalData={modalData} />
+          <Modal onCloseModal={toggleModal} modalData={modalData} />
         )}
       </main>
       <Footer />

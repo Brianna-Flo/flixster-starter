@@ -17,9 +17,10 @@ const MovieList = ({
   fetching,
   favoriteMovies,
   watchedMovies,
+  searchView
 }) => {
   if (data.length === 0) {
-    return <p>No search matches</p>;
+    return <p>No results?? Lets change that!!</p>;
   }
   // handler function for clicking load more movies (increment page by 1)
   const handleClick = (event) => {
@@ -37,7 +38,7 @@ const MovieList = ({
 
   // display button only if there are more pages to load
   let content = <></>;
-  if (morePages) {
+  if ((searchView !== "favorites" && searchView !== "watched") && morePages) {
     content = <button onClick={handleClick}>Load More</button>;
   }
   return (
