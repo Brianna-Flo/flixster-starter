@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer>
       <p>Flixter Project</p>
-      <p>2024 copyright Flixter</p>
+      <p>2024 copyright Brianna Flores</p>
     </footer>
   );
 };
