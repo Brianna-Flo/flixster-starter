@@ -5,5 +5,6 @@ footer {
     align-items: center;
     padding: 25px 20px;
     margin-top: 20px;
-    color: #ffffff
+    color: #ffffff;
+    font-size: 3vh;
 }
