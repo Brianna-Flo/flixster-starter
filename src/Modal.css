@@ -15,20 +15,32 @@
    padding: 20px;
    border: 1px solid #888;
    width: 90%;
-   max-width: 60%;
+   max-width: 40%;
    max-height: 80%;
-   display: flex;
+   /* display: flex;
    flex-direction: column;
-   align-items: center;
+   align-items: center; */
    overflow: scroll;
    border-radius: 5%;
 }
 
+div.modal-content p {
+   padding: 0;
+   margin: 0.3vh;
+   font-size: 2vh;
+   flex-grow: 1;
+}
+
+div.modal-content h2 {
+   font-size: 3.5vh;
+}
+
 .modal-close {
    color: #aaa;
-   font-size: 28px;
+   font-size: 3vh;
    font-weight: bold;
-   align-self: end;
+   display: flex;
+   margin-right: 1vw;
 }
 
 .modal-close:hover,
@@ -36,4 +48,20 @@
    color: black;
    text-decoration: none;
    cursor: pointer;
+}
+
+.modal-content img {
+   width: 60%;
+}
+
+iframe {
+   width: 80%;
+   /* height: 300vh; */
+}
+
+@media (max-width: 600px) {
+  /* phones */
+  .modal-content {
+   max-width: 70%;
+  }
 }

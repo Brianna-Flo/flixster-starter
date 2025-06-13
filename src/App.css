@@ -2,11 +2,21 @@
   background-color: #d7263d;
   color: white;
   padding: 0;
+  display: flex;
+  justify-content: space-around;
 }
 
 body {
   background-color: #1c1c1e;
   height: 100%;
+}
+
+body.opened {
+  overflow: hidden;
+}
+
+#banner h1 {
+  font-size: 4vh;
 }
 
 html {
@@ -32,12 +42,12 @@ html {
 .App-header {
   /* background-color: #282c34; */
   /* background-color: #d7263d; */
-  background-color: #d7263d;
+  background-color: #2c2c2e;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: #ffffff;
-  padding: 20px 70px;
+  padding: 2vh 4vw;
 }
 
 #nav-bar {
@@ -46,6 +56,10 @@ html {
 
 main {
   flex: 1;
+}
+
+footer {
+  font-size: 2vh;
 }
 
 @media (max-width: 600px) {
@@ -64,14 +78,6 @@ main {
   }
 }
 
-@media (min-width: 600px) {
-  /* tablets and large phones */
-}
-
-@media (min-width: 768px) {
-  /* small laptops */
-}
-
-@media (mid-width: 1280px) {
-  /* large laptops */
+.gold {
+  color: #f9d923;
 }

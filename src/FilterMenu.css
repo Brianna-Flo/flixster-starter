@@ -1,3 +1,7 @@
 #filter:hover {
     cursor: pointer;
 }
+
+#filter {
+    font-size: 1.6vh;
+}

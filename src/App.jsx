@@ -7,7 +7,7 @@ import Modal from "./Modal";
 import FilterMenu from "./FilterMenu";
 import Footer from "./Footer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faTicket } from '@fortawesome/free-solid-svg-icons'
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const NOW_PLAYING = "/movie/now_playing";
@@ -84,7 +84,9 @@ const App = () => {
       console.log(watchedMovies);
       setMovieData(watchedMovies);
       setFetchingData(false);
-    } 
+    } else {
+      setMovieData([]);
+    }
   }, [searchView]);
 
   // when modal data changes, load runtime details
@@ -176,7 +178,7 @@ const App = () => {
         throw new Error("Failed to fetch movie trailer");
       }
       const data = await response.json();
-      const official = data.results.filter((video) => video.official);
+      const official = data.results.filter((video) => video.type === "Trailer");
       const trailer = `https://www.youtube.com/embed/${official[0].key}`;
 
       setModalData((prev) => ({
@@ -236,11 +238,13 @@ const App = () => {
   // open the modal
   const handleOpenModal = () => {
     setModalOpen(true);
+    document.querySelector("body").className = "opened";
   };
 
   // close the modal
   const handleCloseModal = () => {
     setModalOpen(false);
+    document.querySelector("body").className = "";
   };
 
   const handleToggleNav = () => {
@@ -280,7 +284,7 @@ const App = () => {
   return (
     <div className="App">
       <section id="banner">
-        <h1>Flixter</h1>
+        <h1><FontAwesomeIcon icon={faTicket} className="gold"/> Flixter <FontAwesomeIcon icon={faTicket} className="gold"/></h1>
       </section>
       <header className="App-header">
         <FilterMenu onFilter={handleFilterRequest} movieData={movieData} />

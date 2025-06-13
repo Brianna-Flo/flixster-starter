@@ -23,15 +23,15 @@ const Modal = ({ onCloseModal, modalData }) => {
         <p id="genres">Genres: {modalData.genres.join(", ")}</p>
         <p id="runtime">Runtime: {modalData.runtime}</p>
         <iframe
-          // width="560"
-          // height="315"
+          width="560"
+          height="315"
           src={modalData.trailer}
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         ></iframe>
-        {/* <button className="close" onClick={handleModalClose}>
+        {/* <button className="" onClick={handleModalClose}>
           Close
         </button> */}
       </div>

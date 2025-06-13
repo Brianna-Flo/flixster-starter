@@ -31,6 +31,8 @@ nav {
     gap: 0.75rem;
     background: none;
     padding-left: 10%;
+    font-size: 3vh;
+    flex-grow: 1;
 }
 
 
@@ -38,9 +40,9 @@ nav {
 .close {
     position: fixed;
     z-index: 1;
-    top: 20px;
-    right: 20px;
-    font-size: 28px;
+    top: 3vh;
+    right: 3vw;
+    font-size: 4vh;
     font-weight: bold;
 }
 
