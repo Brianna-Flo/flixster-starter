@@ -192,7 +192,13 @@ const App = () => {
     if (favorite) {
       // if movie was favorited
       // updatedMovie = { ...movie, favorited: true };
-      setFavoriteMovies((prev) => [...prev, movie]);
+      setFavoriteMovies((prev) => {
+        // check if we are favoriting and the movie wasnt already favorited
+        if (favorite && !(prev.some(curr => curr.id === movie.id))) {
+          return [...prev, movie]
+        } else {
+          return prev;
+        }});
       console.log('movie was favorited');
     } else {
       setFavoriteMovies(favoriteMovies.filter((curr) => {return curr.id !== movie.id}));
@@ -297,6 +303,8 @@ const App = () => {
           onFavorite={handleFavoriteMovie}
           onWatch={handleWatchedMovie}
           fetching={fetchingData}
+          favoriteMovies = {favoriteMovies}
+          watchedMovies = {watchedMovies}
         />
         {modalOpen && (
           <Modal onCloseModal={handleCloseModal} modalData={modalData} />

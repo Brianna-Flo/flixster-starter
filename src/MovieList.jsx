@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 import { parseMovieData } from './utils/utils'
 
-const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genreData, onFavorite, onWatch, fetching }) => {
+const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genreData, onFavorite, onWatch, fetching, favoriteMovies, watchedMovies }) => {
     if (data.length === 0) {
         return <p>No search matches</p>
     }
@@ -38,7 +38,7 @@ const MovieList = ({ onLoadMore, data, morePages, onOpenModal, onLoadModal, genr
                 filteredMovies.map((movie) => {
                     return (
                         // create a movie card component for each movie in array using parsed data
-                        <MovieCard key={movie.id} data={movie} onOpenModal={onOpenModal} onLoadModal={onLoadModal} onFavorite={onFavorite} onWatch={onWatch} />
+                        <MovieCard key={movie.id} data={movie} onOpenModal={onOpenModal} onLoadModal={onLoadModal} onFavorite={onFavorite} onWatch={onWatch} favoriteMovies={favoriteMovies} watchedMovies={watchedMovies}/>
                     )
                 })
             }
